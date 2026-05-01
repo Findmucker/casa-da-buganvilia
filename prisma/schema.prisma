@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ─── Admin ───────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── Categories ──────────────────────────────────────────────────────
+
+model Category {
+  id           String                @id @default(cuid())
+  slug         String                @unique
+  parentId     String?
+  parent       Category?             @relation("CategoryTree", fields: [parentId], references: [id])
+  children     Category[]            @relation("CategoryTree")
+  sortOrder    Int                   @default(0)
+  active       Boolean               @default(true)
+  moloniId     Int?                  @unique
+  translations CategoryTranslation[]
+  products     Product[]
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+}
+
+model CategoryTranslation {
+  id          String   @id @default(cuid())
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  locale      String
+  name        String
+  description String?
+
+  @@unique([categoryId, locale])
+}
+
+// ─── Products ────────────────────────────────────────────────────────
+
+model Product {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  price        Decimal
+  categoryId   String
+  category     Category             @relation(fields: [categoryId], references: [id])
+  moloniId     Int?                 @unique
+  stock        Int                  @default(0)
+  hasStock     Boolean              @default(true)
+  moloniSyncedAt DateTime?
+  featured     Boolean              @default(false)
+  active       Boolean              @default(true)
+  sortOrder    Int                  @default(0)
+  translations ProductTranslation[]
+  images       ProductImage[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+model ProductTranslation {
+  id               String  @id @default(cuid())
+  productId        String
+  product          Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  locale           String
+  name             String
+  description      String?
+  shortDescription String?
+
+  @@unique([productId, locale])
+}
+
+model ProductImage {
+  id                String  @id @default(cuid())
+  productId         String
+  product           Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cloudinaryPublicId String
+  url               String
+  alt               String?
+  sortOrder         Int     @default(0)
+  isPrimary         Boolean @default(false)
+}
+
+// ─── Artists & Artworks ──────────────────────────────────────────────
+
+model Artist {
+  id           String              @id @default(cuid())
+  slug         String              @unique
+  active       Boolean             @default(true)
+  photoUrl     String?
+  translations ArtistTranslation[]
+  artworks     Artwork[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+model ArtistTranslation {
+  id       String @id @default(cuid())
+  artistId String
+  artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  locale   String
+  name     String
+  bio      String? 
+  @@unique([artistId, locale])
+}
+
+model Artwork {
+  id           String               @id @default(cuid())
+  artistId     String
+  artist       Artist               @relation(fields: [artistId], references: [id])
+  slug         String               @unique
+  price        Decimal?
+  medium       String?
+  active       Boolean              @default(true)
+  translations ArtworkTranslation[]
+  images       ArtworkImage[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+model ArtworkTranslation {
+  id          String  @id @default(cuid())
+  artworkId   String
+  artwork     Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  locale      String
+  title       String
+  description String? 
+  @@unique([artworkId, locale])
+}
+
+model ArtworkImage {
+  id                String  @id @default(cuid())
+  artworkId         String
+  artwork           Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  cloudinaryPublicId String
+  url               String
+  alt               String?
+  sortOrder         Int     @default(0)
+}
+
+// ─── Gallery (physical space photos) ─────────────────────────────────
+
+enum GallerySection {
+  EXTERIOR
+  GROUND_FLOOR
+  SECOND_FLOOR
+  COURTYARD
+  DETAIL
+}
+
+model GalleryImage {
+  id                String         @id @default(cuid())
+  cloudinaryPublicId String
+  url               String
+  alt               String?
+  section           GallerySection
+  sortOrder         Int            @default(0)
+  createdAt         DateTime       @default(now())
+}
+
+// ─── Site Settings ───────────────────────────────────────────────────
+
+model SiteSettings {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Moloni Sync ─────────────────────────────────────────────────────
+
+model MoloniSyncLog {
+  id        String   @id @default(cuid())
+  type      String   // "products", "categories", "stock"
+  status    String   // "success", "error"
+  message   String?
+  itemCount Int      @default(0)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,88 @@
+{
+  "common": {
+    "siteTitle": "Casa da Buganvília",
+    "siteDescription": "Óbidosでのユニークな体験",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "backToHome": "ホームに戻る",
+    "viewAll": "すべて見る",
+    "seeMore": "もっと見る",
+    "price": "価格",
+    "search": "検索",
+    "noResults": "結果なし",
+    "close": "閉じる"
+  },
+  "nav": {
+    "home": "ホーム",
+    "shop": "ショップ",
+    "gallery": "アートギャラリー",
+    "about": "スペース紹介",
+    "contact": "お問い合わせ",
+    "clothing": "衣類",
+    "tableware": "食器",
+    "jewellery": "ジュエリー",
+    "food": "グルメ＆タパス",
+    "soaps": "石鹸＆クリーム",
+    "wines": "ワイン"
+  },
+  "home": {
+    "heroTitle": "Casa da Buganvília",
+    "heroSubtitle": "Óbidosの魅力あふれる家",
+    "heroDescription": "ユニークな衣類、手作りの食器、ジュエリー、グルメフードなど、すべての部屋が物語を語る空間で発見してください。",
+    "featuredProducts": "おすすめ商品",
+    "visitUs": "ぜひお越しください",
+    "visitUsDescription": "Óbidosの中心にある古い家が、ショッピングと文化のためのユニークな空間に生まれ変わりました。",
+    "exploreSpace": "スペースを探索する",
+    "artGallery": "アートギャラリー",
+    "artGalleryDescription": "2階では地元アーティストの作品をご覧いただけます。絵画や彫刻を入場無料でお楽しみください。",
+    "openingHours": "営業時間"
+  },
+  "shop": {
+    "title": "ショップ",
+    "subtitle": "丁寧に選ばれたユニークな作品",
+    "allCategories": "全カテゴリー",
+    "sortBy": "並び替え",
+    "sortNewest": "新着順",
+    "sortPriceAsc": "価格：安い順",
+    "sortPriceDesc": "価格：高い順",
+    "enquire": "興味があります",
+    "enquireWhatsApp": "WhatsAppで問い合わせ",
+    "availabilityNote": "在庫は確認が必要です。お問い合わせください。",
+    "relatedProducts": "関連商品"
+  },
+  "gallery": {
+    "title": "アートギャラリー",
+    "subtitle": "地元のアーティストを無料で紹介しています。絵画や彫刻をご鑑賞・ご購入いただけます。",
+    "artists": "アーティスト",
+    "artworks": "作品",
+    "medium": "技法",
+    "enquireArtwork": "この作品に興味があります"
+  },
+  "about": {
+    "title": "スペース紹介",
+    "subtitle": "ショップ以上の、特別な体験",
+    "storyTitle": "私たちのストーリー",
+    "storyText": "Casa da Buganvíliaは、Óbidosの中心にある古い家を、各部屋が異なる体験を提供するユニークな空間に生まれ変わらせたものです。ヴィンテージの装飾の中、商品そのものが空間を彩り、温かく本格的な雰囲気を作り出しています。",
+    "groundFloor": "1階",
+    "secondFloor": "2階",
+    "courtyard": "中庭",
+    "musicNote": "いつも音楽が流れ、独特の雰囲気を作り出しています。"
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "subtitle": "ぜひお越しいただくか、ご連絡ください",
+    "address": "住所",
+    "phone": "電話番号",
+    "email": "メール",
+    "whatsapp": "WhatsApp",
+    "openingHours": "営業時間",
+    "getDirections": "アクセス方法",
+    "sendMessage": "メッセージを送る"
+  },
+  "footer": {
+    "rights": "全著作権所有",
+    "followUs": "フォローする",
+    "newsletter": "ニュースレター",
+    "madeWith": "Óbidosで ❤️ を込めて作りました"
+  }
+}

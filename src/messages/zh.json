@@ -1,0 +1,88 @@
+{
+  "common": {
+    "siteTitle": "Casa da Buganvília",
+    "siteDescription": "在Óbidos的独特体验",
+    "loading": "加载中...",
+    "error": "发生了错误",
+    "backToHome": "返回首页",
+    "viewAll": "查看全部",
+    "seeMore": "查看更多",
+    "price": "价格",
+    "search": "搜索",
+    "noResults": "无结果",
+    "close": "关闭"
+  },
+  "nav": {
+    "home": "首页",
+    "shop": "商店",
+    "gallery": "艺术画廊",
+    "about": "空间介绍",
+    "contact": "联系我们",
+    "clothing": "服饰",
+    "tableware": "餐具",
+    "jewellery": "珠宝",
+    "food": "美食与小吃",
+    "soaps": "香皂与护肤品",
+    "wines": "葡萄酒"
+  },
+  "home": {
+    "heroTitle": "Casa da Buganvília",
+    "heroSubtitle": "Óbidos的一座迷人小屋",
+    "heroDescription": "在这里发现独特的服饰、手工餐具、珠宝、美食佳肴等，每个房间都诉说着一个故事。",
+    "featuredProducts": "精选产品",
+    "visitUs": "来访我们",
+    "visitUsDescription": "我们位于Óbidos的中心，一座古老的房子被改造成了集购物与文化于一体的独特空间。",
+    "exploreSpace": "探索空间",
+    "artGallery": "艺术画廊",
+    "artGalleryDescription": "在二楼，您可以欣赏当地艺术家的作品——绘画和雕塑，免费参观。",
+    "openingHours": "营业时间"
+  },
+  "shop": {
+    "title": "商店",
+    "subtitle": "精心挑选的独特作品",
+    "allCategories": "所有分类",
+    "sortBy": "排序方式",
+    "sortNewest": "最新上架",
+    "sortPriceAsc": "价格：从低到高",
+    "sortPriceDesc": "价格：从高到低",
+    "enquire": "我感兴趣",
+    "enquireWhatsApp": "通过WhatsApp联系",
+    "availabilityNote": "库存需确认，请联系我们查询。",
+    "relatedProducts": "相关产品"
+  },
+  "gallery": {
+    "title": "艺术画廊",
+    "subtitle": "我们免费推广当地艺术家。发现和收藏绘画与雕塑作品。",
+    "artists": "艺术家",
+    "artworks": "作品",
+    "medium": "媒介",
+    "enquireArtwork": "对这件作品感兴趣"
+  },
+  "about": {
+    "title": "空间介绍",
+    "subtitle": "不只是商店，更是一种体验",
+    "storyTitle": "我们的故事",
+    "storyText": "Casa da Buganvília是Óbidos中心的一座古老房屋，被改造成一个独特的空间，每个房间都带来不同的体验。复古的装饰风格中，产品本身就是装饰，营造出温馨而真实的氛围。",
+    "groundFloor": "一楼",
+    "secondFloor": "二楼",
+    "courtyard": "内庭院",
+    "musicNote": "音乐常伴，营造独特的氛围。"
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "欢迎来访或与我们联系",
+    "address": "地址",
+    "phone": "电话",
+    "email": "电子邮件",
+    "whatsapp": "WhatsApp",
+    "openingHours": "营业时间",
+    "getDirections": "获取路线",
+    "sendMessage": "发送消息"
+  },
+  "footer": {
+    "rights": "版权所有",
+    "followUs": "关注我们",
+    "newsletter": "新闻通讯",
+    "madeWith": "用 ❤️ 在Óbidos制作"
+  }
+}

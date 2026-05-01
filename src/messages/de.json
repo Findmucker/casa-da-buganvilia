@@ -1,0 +1,88 @@
+{
+  "common": {
+    "siteTitle": "Casa da Buganvília",
+    "siteDescription": "Ein einzigartiges Erlebnis in Óbidos",
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten",
+    "backToHome": "Zurück zur Startseite",
+    "viewAll": "Alle anzeigen",
+    "seeMore": "Mehr sehen",
+    "price": "Preis",
+    "search": "Suchen",
+    "noResults": "Keine Ergebnisse",
+    "close": "Schließen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "shop": "Shop",
+    "gallery": "Kunstgalerie",
+    "about": "Der Raum",
+    "contact": "Kontakt",
+    "clothing": "Kleidung",
+    "tableware": "Geschirr",
+    "jewellery": "Schmuck",
+    "food": "Feinkost & Tapas",
+    "soaps": "Seifen & Cremes",
+    "wines": "Weine"
+  },
+  "home": {
+    "heroTitle": "Casa da Buganvília",
+    "heroSubtitle": "Ein charmantes Haus in Óbidos",
+    "heroDescription": "Entdecken Sie einzigartige Kleidung, handgefertigtes Geschirr, Schmuck, Gourmet-Spezialitäten und vieles mehr, in einem Raum, in dem jedes Zimmer eine Geschichte erzählt.",
+    "featuredProducts": "Ausgewählte Produkte",
+    "visitUs": "Besuchen Sie Uns",
+    "visitUsDescription": "Wir befinden uns im Herzen von Óbidos, in einem alten Haus, das in einen einzigartigen Raum für Shopping und Kultur verwandelt wurde.",
+    "exploreSpace": "Den Raum Entdecken",
+    "artGallery": "Kunstgalerie",
+    "artGalleryDescription": "Im ersten Stock entdecken Sie Werke lokaler Künstler — Gemälde und Skulpturen bei freiem Eintritt.",
+    "openingHours": "Öffnungszeiten"
+  },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Einzigartige Stücke mit Sorgfalt ausgewählt",
+    "allCategories": "Alle Kategorien",
+    "sortBy": "Sortieren nach",
+    "sortNewest": "Neueste",
+    "sortPriceAsc": "Preis: aufsteigend",
+    "sortPriceDesc": "Preis: absteigend",
+    "enquire": "Ich bin interessiert",
+    "enquireWhatsApp": "Über WhatsApp kontaktieren",
+    "availabilityNote": "Verfügbarkeit vorbehaltlich Bestätigung. Kontaktieren Sie uns zur Überprüfung.",
+    "relatedProducts": "Ähnliche Produkte"
+  },
+  "gallery": {
+    "title": "Kunstgalerie",
+    "subtitle": "Wir fördern lokale Künstler kostenlos. Gemälde und Skulpturen zum Entdecken und Erwerben.",
+    "artists": "Künstler",
+    "artworks": "Kunstwerke",
+    "medium": "Technik",
+    "enquireArtwork": "Interesse an diesem Kunstwerk"
+  },
+  "about": {
+    "title": "Der Raum",
+    "subtitle": "Mehr als ein Geschäft, ein Erlebnis",
+    "storyTitle": "Unsere Geschichte",
+    "storyText": "Casa da Buganvília ist ein altes Haus im Herzen von Óbidos, das in einen einzigartigen Raum verwandelt wurde, in dem jedes Zimmer ein anderes Erlebnis bietet. Mit Vintage-Dekoration schmücken die Produkte selbst den Raum und schaffen eine warme und authentische Atmosphäre.",
+    "groundFloor": "Erdgeschoss",
+    "secondFloor": "Erstes Obergeschoss",
+    "courtyard": "Innenhof",
+    "musicNote": "Musik spielt immer und schafft eine einzigartige Atmosphäre."
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Besuchen Sie uns oder nehmen Sie Kontakt auf",
+    "address": "Adresse",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "whatsapp": "WhatsApp",
+    "openingHours": "Öffnungszeiten",
+    "getDirections": "Anfahrt",
+    "sendMessage": "Nachricht Senden"
+  },
+  "footer": {
+    "rights": "Alle Rechte vorbehalten",
+    "followUs": "Folgen Sie uns",
+    "newsletter": "Newsletter",
+    "madeWith": "Mit ❤️ in Óbidos gemacht"
+  }
+}

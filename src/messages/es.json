@@ -1,0 +1,88 @@
+{
+  "common": {
+    "siteTitle": "Casa da Buganvília",
+    "siteDescription": "Una experiencia única en Óbidos",
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "backToHome": "Volver al inicio",
+    "viewAll": "Ver todo",
+    "seeMore": "Ver más",
+    "price": "Precio",
+    "search": "Buscar",
+    "noResults": "Sin resultados",
+    "close": "Cerrar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "shop": "Tienda",
+    "gallery": "Galería de Arte",
+    "about": "El Espacio",
+    "contact": "Contacto",
+    "clothing": "Ropa",
+    "tableware": "Vajilla",
+    "jewellery": "Joyería",
+    "food": "Gastronomía & Tapas",
+    "soaps": "Jabones & Cremas",
+    "wines": "Vinos"
+  },
+  "home": {
+    "heroTitle": "Casa da Buganvília",
+    "heroSubtitle": "Una casa llena de encanto en Óbidos",
+    "heroDescription": "Descubre ropa única, vajilla artesanal, joyería, gastronomía gourmet y mucho más, en un espacio donde cada habitación cuenta una historia.",
+    "featuredProducts": "Productos Destacados",
+    "visitUs": "Visítanos",
+    "visitUsDescription": "Estamos en el corazón de Óbidos, en una antigua casa transformada en un espacio único para compras y cultura.",
+    "exploreSpace": "Explora el Espacio",
+    "artGallery": "Galería de Arte",
+    "artGalleryDescription": "En la primera planta, descubre obras de artistas locales — pinturas y esculturas con entrada gratuita.",
+    "openingHours": "Horario de Apertura"
+  },
+  "shop": {
+    "title": "Tienda",
+    "subtitle": "Piezas únicas seleccionadas con cuidado",
+    "allCategories": "Todas las Categorías",
+    "sortBy": "Ordenar por",
+    "sortNewest": "Más recientes",
+    "sortPriceAsc": "Precio: de menor a mayor",
+    "sortPriceDesc": "Precio: de mayor a menor",
+    "enquire": "Me interesa",
+    "enquireWhatsApp": "Contactar por WhatsApp",
+    "availabilityNote": "Disponibilidad sujeta a confirmación. Contáctanos para verificar.",
+    "relatedProducts": "Productos Relacionados"
+  },
+  "gallery": {
+    "title": "Galería de Arte",
+    "subtitle": "Promovemos artistas locales sin coste. Pinturas y esculturas para descubrir y adquirir.",
+    "artists": "Artistas",
+    "artworks": "Obras",
+    "medium": "Técnica",
+    "enquireArtwork": "Interesado en esta obra"
+  },
+  "about": {
+    "title": "El Espacio",
+    "subtitle": "Más que una tienda, una experiencia",
+    "storyTitle": "Nuestra Historia",
+    "storyText": "Casa da Buganvília es una antigua casa en el corazón de Óbidos, transformada en un espacio único donde cada habitación ofrece una experiencia diferente. Con decoración vintage, los propios productos decoran el espacio, creando un ambiente cálido y auténtico.",
+    "groundFloor": "Planta Baja",
+    "secondFloor": "Primera Planta",
+    "courtyard": "Patio Interior",
+    "musicNote": "Música siempre sonando, creando una atmósfera única."
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Ven a visitarnos o ponte en contacto",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo Electrónico",
+    "whatsapp": "WhatsApp",
+    "openingHours": "Horario de Apertura",
+    "getDirections": "Cómo Llegar",
+    "sendMessage": "Enviar Mensaje"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados",
+    "followUs": "Síguenos",
+    "newsletter": "Newsletter",
+    "madeWith": "Hecho con ❤️ en Óbidos"
+  }
+}
