@@ -1,162 +1,117 @@
-# 🌺 Casa da Buganvília
+# Casa da Buganvília
 
-Loja online artesanal em Óbidos — vestuário, louça, joalharia, gastronomia, vinhos e sabonetes. Com painel de administração, integração Moloni e temas sazonais.
+Website e futura loja online da Casa da Buganvília, em Óbidos. O projeto inclui catálogo multilingue, galeria, administração, gestão de stock e integrações externas.
+
+## Estado atual
+
+O site público está em modo de construção por omissão. Todas as rotas públicas encaminham para uma página de lançamento localizada, enquanto as rotas `/admin` e `/api` continuam disponíveis.
+
+Para publicar a loja completa, configure:
+
+```env
+NEXT_PUBLIC_SITE_LIVE=true
+```
+
+Sem esta variável, ou com qualquer valor diferente de `true`, o modo de construção permanece ativo.
 
 ## Funcionalidades
 
-### 🛍️ Loja Online
-- Catálogo de produtos por categoria (vestuário, louça, joalharia, gastronomia, sabonetes, vinhos)
-- Página individual por produto com galeria de imagens
-- Indicador de stock em tempo real
-- Contacto via WhatsApp para encomendas
+- Página de lançamento responsiva em português, inglês, francês, espanhol, alemão, japonês e chinês
+- Catálogo e páginas de produto por categoria
+- Galeria de arte e apresentação do espaço
+- Administração protegida com NextAuth
+- Upload de imagens através do Cloudinary
+- Sincronização de produtos e stock com Moloni
+- Temas visuais sazonais
 
-### 🌍 Internacionalização
-- 7 idiomas: Português, English, Français, Español, Deutsch, 日本語, 中文
-- Routing por locale (`/pt/shop`, `/en/shop`, etc.)
-- Traduções completas via `next-intl`
+## Tecnologia
 
-### 🎨 Temas Sazonais
-- **Buganvília** (default) — cores quentes, mediterrâneo
-- **Christmas** — tema natalício
-- **Medieval** — inspirado na vila medieval de Óbidos
-- Switching dinâmico de tema
+- Next.js 16 e React 19
+- TypeScript em modo estrito
+- Tailwind CSS 4
+- next-intl
+- Prisma ORM e SQLite no desenvolvimento
+- Vitest
+- ESLint
 
-### 🔧 Painel de Administração
-- Login seguro (NextAuth)
-- Gestão de produtos (CRUD)
-- Upload de imagens (Cloudinary)
-- Gestão de categorias
-- Configurações da loja
+## Desenvolvimento local
 
-### 📊 Integração Moloni
-- Sincronização de produtos com Moloni (ERP/faturação)
-- Controlo de stock automático
-- Dashboard de estado da integração
+Requisitos:
 
-## Tech Stack
-
-- **Framework:** Next.js 16.2.4 (App Router)
-- **UI:** Tailwind CSS v4, Radix UI, Lucide Icons
-- **Database:** SQLite via Prisma ORM
-- **Auth:** NextAuth v5 (beta)
-- **Images:** Cloudinary
-- **i18n:** next-intl
-- **ERP:** Moloni API
-- **Deploy:** Vercel
-
-## Setup Local
-
-### 1. Clonar e instalar
+- Node.js 20 ou superior
+- npm
 
 ```bash
 git clone https://github.com/Findmucker/casa-da-buganvilia.git
 cd casa-da-buganvilia
-npm install
-```
-
-### 2. Configurar variáveis de ambiente
-
-Criar ficheiro `.env.local`:
-
-```env
-# Database
-DATABASE_URL="file:./prisma/dev.db"
-
-# NextAuth
-NEXTAUTH_SECRET=your_secret_here
-NEXTAUTH_URL=http://localhost:3000
-
-# Cloudinary (upload de imagens)
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# Moloni (ERP - opcional)
-MOLONI_CLIENT_ID=your_client_id
-MOLONI_CLIENT_SECRET=your_client_secret
-MOLONI_REFRESH_TOKEN=your_refresh_token
-MOLONI_COMPANY_ID=your_company_id
-```
-
-### 3. Configurar base de dados
-
-```bash
-# Criar/migrar database
+npm ci
+Copy-Item .env.example .env.local
 npm run db:push
-
-# Seed com dados iniciais
-npm run db:seed
-
-# Visualizar dados (opcional)
-npm run db:studio
-```
-
-### 4. Correr localmente
-
-```bash
 npm run dev
 ```
 
-Abrir [http://localhost:3000](http://localhost:3000)
+Em macOS ou Linux, substitua `Copy-Item` por:
 
-## Estrutura do Projeto
-
-```
-casa-da-buganvilia/
-├── prisma/
-│   ├── schema.prisma       # Schema da base de dados
-│   └── seed.ts             # Dados iniciais
-├── public/
-│   ├── logo.jpg            # Logo da loja
-│   └── logo-original.jpg   # Logo original
-├── src/
-│   ├── app/
-│   │   ├── [locale]/       # Páginas públicas (i18n)
-│   │   │   ├── shop/       # Loja
-│   │   │   ├── gallery/    # Galeria
-│   │   │   ├── about/      # Sobre nós
-│   │   │   └── contact/    # Contacto
-│   │   ├── admin/          # Painel de administração
-│   │   └── api/            # API routes
-│   ├── components/
-│   │   ├── layout/         # Header, Footer, LanguageSwitcher
-│   │   ├── shop/           # ProductCard, StockBadge, WhatsApp
-│   │   ├── themes/         # Temas sazonais (buganvilia, christmas, medieval)
-│   │   ├── ui/             # Componentes base (Button, etc.)
-│   │   └── admin/          # Sidebar admin
-│   ├── i18n/               # Configuração i18n
-│   ├── lib/                # Utilities (prisma, auth, moloni, cloudinary)
-│   └── messages/           # Ficheiros de tradução (pt, en, fr, es, de, ja, zh)
-└── package.json
+```bash
+cp .env.example .env.local
 ```
 
-## Scripts Disponíveis
+O site fica disponível em [http://localhost:3000](http://localhost:3000).
 
-| Script | Descrição |
-|---|---|
-| `npm run dev` | Servidor de desenvolvimento |
+## Variáveis de ambiente
+
+Consulte [.env.example](.env.example). As integrações Cloudinary e Moloni são opcionais para trabalhar exclusivamente na página pública de construção.
+
+Nunca coloque credenciais reais no repositório.
+
+## Qualidade
+
+Execute a verificação completa antes de abrir um pull request ou publicar:
+
+```bash
+npm run check
+```
+
+Comandos individuais:
+
+| Comando | Objetivo |
+| --- | --- |
+| `npm run lint` | Análise estática |
+| `npm run typecheck` | Verificação TypeScript |
+| `npm test` | Testes unitários |
+| `npm run test:watch` | Testes durante desenvolvimento |
 | `npm run build` | Build de produção |
-| `npm run start` | Servidor de produção |
-| `npm run lint` | Linting |
-| `npm run db:migrate` | Migrar base de dados |
-| `npm run db:seed` | Seed com dados iniciais |
-| `npm run db:studio` | Prisma Studio (UI para DB) |
-| `npm run db:push` | Push schema para DB |
 
-## Deploy
+## Base de dados
 
-### Vercel (recomendado)
+```bash
+npm run db:push
+npm run db:seed
+npm run db:studio
+```
 
-1. Ligar repo ao Vercel
-2. Configurar variáveis de ambiente no dashboard
-3. Deploy automático a cada push
+SQLite serve apenas para desenvolvimento. Antes do lançamento comercial, deve ser adotada uma base de dados persistente adequada ao ambiente de produção.
 
-### Nota sobre Database
+## Estrutura principal
 
-Em produção, trocar SQLite por PostgreSQL (ex: Neon, Supabase):
-1. Alterar `provider` em `prisma/schema.prisma`
-2. Atualizar `DATABASE_URL` com connection string do PostgreSQL
+```text
+prisma/                   Modelo e dados iniciais
+public/                   Recursos estáticos
+src/app/                  Rotas Next.js
+src/components/           Componentes visuais e funcionais
+src/i18n/                 Configuração de idiomas
+src/lib/                  Serviços e regras reutilizáveis
+src/messages/             Traduções
+src/proxy.ts              Gate público e routing localizado
+```
 
-## Licença
+## Publicação
 
-Projeto pessoal — feito com 🌺
+O procedimento de configuração, lançamento e rollback está em [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+As alterações relevantes devem:
+
+1. Ter uma issue associada.
+2. Incluir testes para regras de negócio novas.
+3. Passar `npm run check`.
+4. Usar uma mensagem de commit que referencie a issue.

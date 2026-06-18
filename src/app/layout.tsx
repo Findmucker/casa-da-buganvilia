@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { isSiteLive } from "@/lib/site-mode";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -14,13 +15,24 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | Casa da Buganvília",
-    default: "Casa da Buganvília — Óbidos",
-  },
-  description: "Uma experiência única em Óbidos. Vestuário, louça artesanal, joalharia, gastronomia e galeria de arte.",
-};
+export function generateMetadata(): Metadata {
+  const siteIsLive = isSiteLive();
+
+  return {
+    title: {
+      template: "%s | Casa da Buganvília",
+      default: siteIsLive
+        ? "Casa da Buganvília — Óbidos"
+        : "Casa da Buganvília — Em breve",
+    },
+    description: siteIsLive
+      ? "Uma experiência única em Óbidos. Vestuário, louça artesanal, joalharia, gastronomia e galeria de arte."
+      : "Uma nova experiência está a florescer no coração de Óbidos. O site da Casa da Buganvília estará disponível em breve.",
+    robots: siteIsLive
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
+  };
+}
 
 export default function RootLayout({
   children,
