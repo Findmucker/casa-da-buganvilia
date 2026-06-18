@@ -11,7 +11,7 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351900000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351910341182";
 
   return <ContactContent locale={locale} whatsappNumber={whatsappNumber} />;
 }

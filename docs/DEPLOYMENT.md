@@ -21,6 +21,7 @@ The proxy matcher excludes `/admin`, `/api`, Next.js internals, Vercel internals
 2. Use `npm ci` as the install command.
 3. Use `npm run build` as the build command.
 4. Configure the variables documented in `.env.example`.
+   Set `NEXT_PUBLIC_WHATSAPP_NUMBER=+351910341182`.
 5. Keep `NEXT_PUBLIC_SITE_LIVE=false` until launch approval.
 6. Deploy and verify the production URL in desktop and mobile viewports.
 

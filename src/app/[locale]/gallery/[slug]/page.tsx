@@ -30,7 +30,7 @@ export default async function ArtworkDetailPage({
   const artistName = artwork.artist.translations[0]?.name || artwork.artist.slug;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const artworkUrl = `${siteUrl}${prefix}/gallery/${slug}`;
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351900000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351910341182";
 
   return <ArtworkDetailContent artwork={artwork} translation={translation} artistName={artistName} locale={locale} prefix={prefix} artworkUrl={artworkUrl} whatsappNumber={whatsappNumber} />;
 }

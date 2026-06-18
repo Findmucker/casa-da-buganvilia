@@ -47,7 +47,7 @@ export default async function ProductDetailPage({
   ).replace(/\/$/, "");
   const catalogBaseUrl = `${siteUrl}${prefix}/shop`;
   const productUrl = `${catalogBaseUrl}/${slug}`;
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351900000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351910341182";
 
   // Related products
   const related = await prisma.product.findMany({

@@ -77,7 +77,7 @@ async function main() {
 
   // Seed default site settings
   const settings = [
-    { key: "whatsapp_number", value: "+351900000000" },
+    { key: "whatsapp_number", value: "+351910341182" },
     { key: "instagram_url", value: "https://www.instagram.com/casadabuganviliaobidos/" },
     { key: "facebook_url", value: "https://www.facebook.com/casadabuganviliaobidos/" },
     { key: "address", value: "Tv. de Baltazar Gomes Figueira S/N, 2510-001 Óbidos" },

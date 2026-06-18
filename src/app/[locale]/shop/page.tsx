@@ -29,7 +29,7 @@ export default async function ShopPage({
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ).replace(/\/$/, "");
   const whatsappNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351900000000";
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351910341182";
 
   // Fetch categories
   const categories = await prisma.category.findMany({
