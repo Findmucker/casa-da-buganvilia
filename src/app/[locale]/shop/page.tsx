@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { getLocalizedRecord } from "@/lib/translations";
 import ProductCard from "@/components/shop/ProductCard";
 import Link from "next/link";
 
@@ -35,7 +36,9 @@ export default async function ShopPage({
   const categories = await prisma.category.findMany({
     where: { active: true },
     include: {
-      translations: { where: { locale } },
+      translations: {
+        where: { locale: { in: [locale, "en", "pt"] } },
+      },
     },
     orderBy: { sortOrder: "asc" },
   });
@@ -47,7 +50,9 @@ export default async function ShopPage({
       ...(category ? { category: { slug: category } } : {}),
     },
     include: {
-      translations: { where: { locale } },
+      translations: {
+        where: { locale: { in: [locale, "en", "pt"] } },
+      },
       images: { where: { isPrimary: true }, take: 1 },
     },
     orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
@@ -116,7 +121,7 @@ function ShopContent({
                 : "bg-white text-warm-brown hover:bg-cream-dark"
             }`}
           >
-            {cat.translations[0]?.name || cat.slug}
+            {getLocalizedRecord(cat.translations, locale)?.name || cat.slug}
           </Link>
         ))}
       </div>
@@ -127,7 +132,10 @@ function ShopContent({
           {products.map((product) => (
             <ProductCard
               key={product.id}
-              name={product.translations[0]?.name || product.slug}
+              name={
+                getLocalizedRecord(product.translations, locale)?.name ||
+                product.slug
+              }
               imageUrl={product.images[0]?.url || ""}
               imageAlt={product.images[0]?.alt ?? undefined}
               locale={locale}

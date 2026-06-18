@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import type { Prisma, ProductTranslation } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { getLocalizedRecord } from "@/lib/translations";
 import WhatsAppButton from "@/components/shop/WhatsAppButton";
 import ProductCard from "@/components/shop/ProductCard";
 
@@ -30,10 +31,16 @@ export default async function ProductDetailPage({
   const product = await prisma.product.findUnique({
     where: { slug, active: true },
     include: {
-      translations: { where: { locale } },
+      translations: {
+        where: { locale: { in: [locale, "en", "pt"] } },
+      },
       images: { orderBy: { sortOrder: "asc" } },
       category: {
-        include: { translations: { where: { locale } } },
+        include: {
+          translations: {
+            where: { locale: { in: [locale, "en", "pt"] } },
+          },
+        },
       },
     },
   });
@@ -41,7 +48,7 @@ export default async function ProductDetailPage({
   if (!product) notFound();
 
   const prefix = locale === "pt" ? "" : `/${locale}`;
-  const translation = product.translations[0];
+  const translation = getLocalizedRecord(product.translations, locale);
   const siteUrl = (
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ).replace(/\/$/, "");
@@ -57,7 +64,9 @@ export default async function ProductDetailPage({
       id: { not: product.id },
     },
     include: {
-      translations: { where: { locale } },
+      translations: {
+        where: { locale: { in: [locale, "en", "pt"] } },
+      },
       images: { where: { isPrimary: true }, take: 1 },
     },
     take: 4,
@@ -133,7 +142,10 @@ function ProductDetailContent({
         {/* Details */}
         <div className="flex flex-col">
           <p className="text-sm text-terracotta uppercase tracking-widest mb-2">
-            {product.category?.translations[0]?.name}
+            {getLocalizedRecord(
+              product.category?.translations ?? [],
+              locale,
+            )?.name}
           </p>
           <h1 className="text-3xl font-serif font-bold text-burgundy mb-4">
             {translation?.name || product.slug}
@@ -169,7 +181,7 @@ function ProductDetailContent({
             {related.map((p) => (
               <ProductCard
                 key={p.id}
-                name={p.translations[0]?.name || p.slug}
+                name={getLocalizedRecord(p.translations, locale)?.name || p.slug}
                 imageUrl={p.images[0]?.url || ""}
                 imageAlt={p.images[0]?.alt ?? undefined}
                 locale={locale}

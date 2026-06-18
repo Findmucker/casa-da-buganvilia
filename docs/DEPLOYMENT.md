@@ -44,6 +44,10 @@ Verify:
 - The logo, typography, floral artwork, and reduced-motion behavior render correctly.
 - Product cards do not display prices and open the correct WhatsApp inquiry.
 - The WhatsApp message contains the selected product name and public URL.
+- Product images load from the local `/products/` assets.
+- Product and category names fall back to English when a visitor locale has no catalog translation.
+
+Catalog provenance and update rules are maintained in [CATALOG_SOURCES.md](CATALOG_SOURCES.md).
 
 ## WhatsApp language policy
 

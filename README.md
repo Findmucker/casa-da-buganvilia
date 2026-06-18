@@ -93,6 +93,8 @@ npm run db:studio
 
 SQLite serve apenas para desenvolvimento. Antes do lançamento comercial, deve ser adotada uma base de dados persistente adequada ao ambiente de produção.
 
+O catálogo inicial é baseado em publicações da conta oficial da loja. As fontes, limitações e processo de atualização estão documentados em [docs/CATALOG_SOURCES.md](docs/CATALOG_SOURCES.md).
+
 ## Estrutura principal
 
 ```text
