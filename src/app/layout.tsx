@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { isSiteLive } from "@/lib/site-mode";
 import "./globals.css";
 
@@ -41,7 +42,10 @@ export default function RootLayout({
 }) {
   return (
     <html className={`${playfair.variable} ${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-cream">{children}</body>
+      <body className="min-h-full flex flex-col font-sans bg-cream">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
