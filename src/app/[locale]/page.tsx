@@ -1,5 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
-import ThemedHome from "./ThemedHome";
+import DefaultHome from "./DefaultHome";
 
 export default async function HomePage({
   params,
@@ -9,5 +9,5 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <ThemedHome locale={locale} />;
+  return <DefaultHome locale={locale} />;
 }

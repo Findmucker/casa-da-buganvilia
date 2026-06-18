@@ -22,7 +22,7 @@ Sem esta variável, ou com qualquer valor diferente de `true`, o modo de constru
 - Administração protegida com NextAuth
 - Upload de imagens através do Cloudinary
 - Sincronização de produtos e stock com Moloni
-- Temas visuais sazonais
+- Identidade visual única e consistente da Casa da Buganvília
 
 ## Tecnologia
 

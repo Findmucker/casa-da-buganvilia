@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./themes.css";
 
 @theme {
   --color-terracotta: #C4704B;

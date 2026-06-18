@@ -1,9 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { ThemeProvider } from "@/components/themes/ThemeProvider";
-import ThemedLayout from "@/components/themes/ThemedLayout";
 import ComingSoon from "@/components/construction/ComingSoon";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { isSiteLive } from "@/lib/site-mode";
 
 export function generateStaticParams() {
@@ -25,9 +25,11 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       {siteIsLive ? (
-        <ThemeProvider>
-          <ThemedLayout>{children}</ThemedLayout>
-        </ThemeProvider>
+        <>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </>
       ) : (
         <ComingSoon locale={locale} />
       )}
