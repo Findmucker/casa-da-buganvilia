@@ -76,6 +76,12 @@ General contact messages use the same policy and include the customer language i
 3. Trigger a new deployment. `NEXT_PUBLIC_*` values are embedded at build time.
 4. Verify the home page, shop, gallery, contact page, locale routing, and admin login.
 
+The repository's SQLite database is bundled for read-only storefront previews on
+Vercel. It is not a persistent production database: admin mutations and data
+written by a serverless invocation will not survive deployments or invocation
+recycling. Configure a managed production database before relying on admin
+catalog writes.
+
 ## Rollback
 
 For an immediate public rollback:
