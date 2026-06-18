@@ -44,6 +44,26 @@ Verify:
 - Product cards do not display prices and open the correct WhatsApp inquiry.
 - The WhatsApp message contains the selected product name and public URL.
 
+## WhatsApp language policy
+
+The store owner handles messages in Portuguese and English. WhatsApp links therefore use this policy:
+
+| Visitor locale | Message sent |
+| --- | --- |
+| Portuguese | Portuguese only |
+| English | English only |
+| French, Spanish, German, Chinese, or Japanese | Visitor-language message followed by an English owner summary |
+| Unsupported locale | English fallback |
+
+The English product summary includes:
+
+- Customer intent: information or order
+- Product name
+- Customer language
+- Canonical product URL
+
+General contact messages use the same policy and include the customer language in the English summary. When adding another site locale, add its customer-facing message and English language label together, then extend the WhatsApp tests.
+
 ## Launch
 
 1. Confirm the storefront, database, authentication, uploads, and external integrations are production-ready.
