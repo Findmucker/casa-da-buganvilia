@@ -24,7 +24,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href={`${prefix}/`}>
-            <Image src="/logo.jpg" alt="Casa da Buganvília" width={220} height={80} className="h-16 w-auto" priority />
+            <Image src="/logo.png" alt="Casa da Buganvília" width={936} height={440} className="h-16 w-auto" priority />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">

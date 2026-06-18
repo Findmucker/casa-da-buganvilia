@@ -101,10 +101,11 @@ export default function ComingSoon({ locale }: { locale: string }) {
       <section className="coming-soon__card">
         <div className="coming-soon__logo">
           <Image
-            src="/logo-original.jpg"
+            src="/logo.png"
             alt="Casa da Buganvília"
-            width={250}
-            height={250}
+            width={936}
+            height={440}
+            sizes="(max-width: 720px) 230px, 310px"
             priority
           />
         </div>
