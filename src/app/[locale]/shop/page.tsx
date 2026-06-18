@@ -1,21 +1,35 @@
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import ProductCard from "@/components/shop/ProductCard";
 import Link from "next/link";
+
+type ShopCategory = Prisma.CategoryGetPayload<{
+  include: { translations: true };
+}>;
+
+type ShopProduct = Prisma.ProductGetPayload<{
+  include: { translations: true; images: true };
+}>;
 
 export default async function ShopPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; sort?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
   const { locale } = await params;
-  const { category, sort } = await searchParams;
+  const { category } = await searchParams;
   setRequestLocale(locale);
 
   const prefix = locale === "pt" ? "" : `/${locale}`;
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  ).replace(/\/$/, "");
+  const whatsappNumber =
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+351900000000";
 
   // Fetch categories
   const categories = await prisma.category.findMany({
@@ -27,12 +41,6 @@ export default async function ShopPage({
   });
 
   // Fetch products
-  const orderBy: any = sort === "price_asc"
-    ? { price: "asc" }
-    : sort === "price_desc"
-    ? { price: "desc" }
-    : { createdAt: "desc" };
-
   const products = await prisma.product.findMany({
     where: {
       active: true,
@@ -42,13 +50,41 @@ export default async function ShopPage({
       translations: { where: { locale } },
       images: { where: { isPrimary: true }, take: 1 },
     },
-    orderBy,
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
   });
 
-  return <ShopContent locale={locale} prefix={prefix} categories={categories} products={products} currentCategory={category} />;
+  return (
+    <ShopContent
+      locale={locale}
+      prefix={prefix}
+      siteUrl={siteUrl}
+      whatsappNumber={whatsappNumber}
+      categories={categories}
+      products={products}
+      currentCategory={category}
+    />
+  );
 }
 
-function ShopContent({ locale, prefix, categories, products, currentCategory }: any) {
+interface ShopContentProps {
+  locale: string;
+  prefix: string;
+  siteUrl: string;
+  whatsappNumber: string;
+  categories: ShopCategory[];
+  products: ShopProduct[];
+  currentCategory?: string;
+}
+
+function ShopContent({
+  locale,
+  prefix,
+  siteUrl,
+  whatsappNumber,
+  categories,
+  products,
+  currentCategory,
+}: ShopContentProps) {
   const t = useTranslations("shop");
 
   return (
@@ -70,7 +106,7 @@ function ShopContent({ locale, prefix, categories, products, currentCategory }: 
         >
           {t("allCategories")}
         </Link>
-        {categories.map((cat: any) => (
+        {categories.map((cat) => (
           <Link
             key={cat.id}
             href={`${prefix}/shop?category=${cat.slug}`}
@@ -88,16 +124,16 @@ function ShopContent({ locale, prefix, categories, products, currentCategory }: 
       {/* Products Grid */}
       {products.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product: any) => (
+          {products.map((product) => (
             <ProductCard
               key={product.id}
-              slug={product.slug}
               name={product.translations[0]?.name || product.slug}
-              price={product.price}
               imageUrl={product.images[0]?.url || ""}
-              imageAlt={product.images[0]?.alt}
+              imageAlt={product.images[0]?.alt ?? undefined}
               locale={locale}
-              localePrefix={prefix}
+              productUrl={`${siteUrl}${prefix}/shop/${product.slug}`}
+              phoneNumber={whatsappNumber}
+              enquiryLabel={t("enquireWhatsApp")}
             />
           ))}
         </div>
@@ -108,7 +144,7 @@ function ShopContent({ locale, prefix, categories, products, currentCategory }: 
         </div>
       )}
 
-      {/* Availability Note */}
+      {/* Inquiry Note */}
       <p className="text-center text-sm text-warm-brown/50 mt-12 italic">
         {t("availabilityNote")}
       </p>

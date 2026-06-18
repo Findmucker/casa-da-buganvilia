@@ -1,35 +1,35 @@
 import Image from "next/image";
-import Link from "next/link";
-import { formatPrice } from "@/lib/utils";
-import StockBadge from "@/components/shop/StockBadge";
+import { MessageCircle } from "lucide-react";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 interface ProductCardProps {
-  slug: string;
   name: string;
-  price: number | string;
   imageUrl: string;
   imageAlt?: string;
   locale: string;
-  localePrefix: string;
-  stock?: number;
-  hasStock?: boolean;
+  productUrl: string;
+  phoneNumber: string;
+  enquiryLabel: string;
 }
 
 export default function ProductCard({
-  slug,
   name,
-  price,
   imageUrl,
   imageAlt,
   locale,
-  localePrefix,
-  stock = 0,
-  hasStock = true,
+  productUrl,
+  phoneNumber,
+  enquiryLabel,
 }: ProductCardProps) {
+  const whatsappUrl = getWhatsAppLink(phoneNumber, name, productUrl, locale);
+
   return (
-    <Link
-      href={`${localePrefix}/shop/${slug}`}
-      className="group block"
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-4"
+      aria-label={`${enquiryLabel}: ${name}`}
     >
       <div className="aspect-[3/4] relative overflow-hidden rounded-lg bg-cream-dark">
         {imageUrl ? (
@@ -50,13 +50,11 @@ export default function ProductCard({
         <h3 className="text-sm font-medium text-warm-brown group-hover:text-burgundy transition-colors">
           {name}
         </h3>
-        <p className="text-sm font-serif text-terracotta mt-1">
-          {formatPrice(price, locale)}
-        </p>
-        <div className="mt-1.5">
-          <StockBadge stock={stock} hasStock={hasStock} locale={locale} />
-        </div>
+        <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-[#128C7E]">
+          <MessageCircle className="h-3.5 w-3.5" />
+          {enquiryLabel}
+        </span>
       </div>
-    </Link>
+    </a>
   );
 }

@@ -41,6 +41,8 @@ Verify:
 - `/shop` redirects to `/`.
 - `/admin/login` remains reachable.
 - The logo, typography, floral artwork, and reduced-motion behavior render correctly.
+- Product cards do not display prices and open the correct WhatsApp inquiry.
+- The WhatsApp message contains the selected product name and public URL.
 
 ## Launch
 

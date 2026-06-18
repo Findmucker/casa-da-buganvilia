@@ -38,17 +38,13 @@
     "openingHours": "营业时间"
   },
   "shop": {
-    "title": "商店",
-    "subtitle": "精心挑选的独特作品",
+    "title": "精选系列",
+    "subtitle": "探索 Casa da Buganvília 的精选商品",
     "allCategories": "所有分类",
-    "sortBy": "排序方式",
-    "sortNewest": "最新上架",
-    "sortPriceAsc": "价格：从低到高",
-    "sortPriceDesc": "价格：从高到低",
     "enquire": "我感兴趣",
-    "enquireWhatsApp": "通过WhatsApp联系",
-    "availabilityNote": "库存需确认，请联系我们查询。",
-    "relatedProducts": "相关产品"
+    "enquireWhatsApp": "通过 WhatsApp 咨询",
+    "availabilityNote": "如需了解详情、确认库存或下单，请直接通过 WhatsApp 联系我们。",
+    "relatedProducts": "您可能还会喜欢"
   },
   "gallery": {
     "title": "艺术画廊",

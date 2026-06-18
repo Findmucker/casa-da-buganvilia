@@ -38,17 +38,13 @@
     "openingHours": "Opening Hours"
   },
   "shop": {
-    "title": "Shop",
-    "subtitle": "Unique pieces selected with care",
+    "title": "Collection",
+    "subtitle": "Discover the items available at Casa da Buganvília",
     "allCategories": "All Categories",
-    "sortBy": "Sort by",
-    "sortNewest": "Newest",
-    "sortPriceAsc": "Price: low to high",
-    "sortPriceDesc": "Price: high to low",
     "enquire": "I'm interested",
-    "enquireWhatsApp": "Contact via WhatsApp",
-    "availabilityNote": "Availability subject to confirmation. Contact us to check.",
-    "relatedProducts": "Related Products"
+    "enquireWhatsApp": "Ask on WhatsApp",
+    "availabilityNote": "For details, availability, or orders, talk to us directly on WhatsApp.",
+    "relatedProducts": "You may also like"
   },
   "gallery": {
     "title": "Art Gallery",

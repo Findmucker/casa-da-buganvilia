@@ -38,17 +38,13 @@
     "openingHours": "営業時間"
   },
   "shop": {
-    "title": "ショップ",
-    "subtitle": "丁寧に選ばれたユニークな作品",
+    "title": "コレクション",
+    "subtitle": "Casa da Buganvília の取扱商品をご覧ください",
     "allCategories": "全カテゴリー",
-    "sortBy": "並び替え",
-    "sortNewest": "新着順",
-    "sortPriceAsc": "価格：安い順",
-    "sortPriceDesc": "価格：高い順",
     "enquire": "興味があります",
-    "enquireWhatsApp": "WhatsAppで問い合わせ",
-    "availabilityNote": "在庫は確認が必要です。お問い合わせください。",
-    "relatedProducts": "関連商品"
+    "enquireWhatsApp": "WhatsAppで質問",
+    "availabilityNote": "詳細、在庫確認、ご注文については、WhatsAppから直接お問い合わせください。",
+    "relatedProducts": "こちらもおすすめ"
   },
   "gallery": {
     "title": "アートギャラリー",

@@ -1,6 +1,6 @@
 # Casa da Buganvília
 
-Website e futura loja online da Casa da Buganvília, em Óbidos. O projeto inclui catálogo multilingue, galeria, administração, gestão de stock e integrações externas.
+Website e catálogo online da Casa da Buganvília, em Óbidos. O projeto apresenta os artigos da loja sem preços ou checkout; os pedidos de informação e compras são tratados pessoalmente através do WhatsApp.
 
 ## Estado atual
 
@@ -17,7 +17,8 @@ Sem esta variável, ou com qualquer valor diferente de `true`, o modo de constru
 ## Funcionalidades
 
 - Página de lançamento responsiva em português, inglês, francês, espanhol, alemão, japonês e chinês
-- Catálogo e páginas de produto por categoria
+- Catálogo visual de produtos por categoria, sem preços públicos
+- Contacto direto por WhatsApp em cada artigo, com mensagem localizada e pré-preenchida
 - Galeria de arte e apresentação do espaço
 - Administração protegida com NextAuth
 - Upload de imagens através do Cloudinary
