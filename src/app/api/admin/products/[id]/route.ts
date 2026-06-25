@@ -18,6 +18,10 @@ interface ProductUpdateInput {
   translations: Record<string, ProductTranslationInput>;
 }
 
+interface ProductStatusInput {
+  active: boolean;
+}
+
 function translationCreates(translations: Record<string, ProductTranslationInput>) {
   return Object.entries(translations)
     .filter(([, value]) => value.name)
@@ -106,6 +110,49 @@ export async function PUT(
     return NextResponse.json(product);
   } catch (error) {
     return productErrorResponse(error);
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const body = (await request.json()) as ProductStatusInput;
+
+  if (typeof body.active !== "boolean") {
+    return NextResponse.json(
+      { error: "O estado do produto e obrigatorio." },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const product = await prisma.product.update({
+      where: { id },
+      data: { active: body.active },
+      select: { id: true, active: true },
+    });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    console.error("Admin product status update failed", error);
+    return NextResponse.json(
+      { error: "Nao foi possivel atualizar o estado." },
+      { status: 500 },
+    );
   }
 }
 
