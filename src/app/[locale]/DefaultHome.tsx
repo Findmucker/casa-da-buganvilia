@@ -8,6 +8,7 @@ export default function DefaultHome({ locale }: { locale: string }) {
   const t = useTranslations("home");
   const tNav = useTranslations("nav");
   const prefix = getLocalePrefix(locale);
+  const navLabel = (key: string) => tNav(key);
 
   return (
     <div>
@@ -54,7 +55,7 @@ export default function DefaultHome({ locale }: { locale: string }) {
             >
               <span className="text-4xl block mb-3">{cat.icon}</span>
               <h3 className="text-sm font-medium text-warm-brown group-hover:text-burgundy transition-colors uppercase tracking-wide">
-                {tNav(cat.key as any)}
+                {navLabel(cat.key)}
               </h3>
             </Link>
           ))}

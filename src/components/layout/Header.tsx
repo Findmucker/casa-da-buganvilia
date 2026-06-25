@@ -13,10 +13,11 @@ export default function Header() {
   const locale = useLocale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const prefix = getLocalePrefix(locale);
+  const navLabel = (key: string) => t(key);
 
   const navItems = NAV_ITEMS_KEYS.map((item) => ({
     href: `${prefix}${item.path}`,
-    label: t(item.key as any),
+    label: navLabel(item.key),
   }));
 
   return (

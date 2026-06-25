@@ -3,20 +3,30 @@ import path from "node:path";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-function getDatasourceUrl(): string | undefined {
-  if (process.env.DATABASE_URL) {
-    return process.env.DATABASE_URL;
+interface DatasourceUrlOptions {
+  databaseUrl?: string;
+  isVercel?: string;
+  cwd?: string;
+}
+
+export function resolveDatasourceUrl({
+  databaseUrl = process.env.DATABASE_URL,
+  isVercel = process.env.VERCEL,
+  cwd = process.cwd(),
+}: DatasourceUrlOptions = {}): string | undefined {
+  if (databaseUrl) {
+    return databaseUrl;
   }
 
-  if (process.env.VERCEL) {
-    return `file:${path.join(process.cwd(), "prisma", "dev.db")}`;
+  if (isVercel) {
+    return `file:${path.join(cwd, "prisma", "dev.db")}`;
   }
 }
 
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    datasourceUrl: getDatasourceUrl(),
+    datasourceUrl: resolveDatasourceUrl(),
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { MapPin, Clock, Mail, Phone, MessageCircle } from "lucide-react";
+import { MapPin, Clock, Mail, MessageCircle } from "lucide-react";
 import { getGeneralWhatsAppLink } from "@/lib/whatsapp";
 import Button from "@/components/ui/Button";
 

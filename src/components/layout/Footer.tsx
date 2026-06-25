@@ -8,6 +8,7 @@ export default function Footer() {
   const tNav = useTranslations("nav");
   const locale = useLocale();
   const prefix = getLocalePrefix(locale);
+  const navLabel = (key: string) => tNav(key);
 
   return (
     <footer className="bg-burgundy text-cream">
@@ -42,7 +43,7 @@ export default function Footer() {
                     href={`${prefix}/shop`}
                     className="text-sm text-cream/70 hover:text-cream transition-colors"
                   >
-                    {tNav(key as any)}
+                    {navLabel(key)}
                   </Link>
                 </li>
               ))}

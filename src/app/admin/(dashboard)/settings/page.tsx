@@ -12,6 +12,11 @@ const SETTING_KEYS = [
   { key: "facebook_url", label: "Facebook URL", type: "url" },
 ];
 
+interface SettingResponse {
+  key: string;
+  value: string;
+}
+
 export default function SettingsPage() {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -20,7 +25,7 @@ export default function SettingsPage() {
   useEffect(() => {
     fetch("/api/admin/settings")
       .then((r) => r.json())
-      .then((data: any[]) => {
+      .then((data: SettingResponse[]) => {
         const map: Record<string, string> = {};
         data.forEach((s) => (map[s.key] = s.value));
         setSettings(map);

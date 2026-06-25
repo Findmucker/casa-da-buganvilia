@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { getErrorMessage } from "@/lib/errors";
 import { syncAll } from "@/lib/moloni-sync";
 import { isMoloniConfigured } from "@/lib/moloni";
 
@@ -20,9 +21,9 @@ export async function POST() {
       success: true,
       ...result,
     });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
-      { error: `Sync failed: ${error.message}` },
+      { error: `Sync failed: ${getErrorMessage(error)}` },
       { status: 500 }
     );
   }

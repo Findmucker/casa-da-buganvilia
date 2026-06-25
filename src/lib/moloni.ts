@@ -62,7 +62,10 @@ export async function getMoloniToken(): Promise<string> {
   return data.access_token;
 }
 
-async function moloniRequest<T>(endpoint: string, params: Record<string, any> = {}): Promise<T> {
+async function moloniRequest(
+  endpoint: string,
+  params: Record<string, string | number | boolean> = {},
+): Promise<unknown> {
   const token = await getMoloniToken();
   const companyId = process.env.MOLONI_COMPANY_ID!;
 
@@ -86,28 +89,28 @@ async function moloniRequest<T>(endpoint: string, params: Record<string, any> = 
 }
 
 export async function getMoloniProducts(offset = 0, qty = 50): Promise<MoloniProduct[]> {
-  return moloniRequest<MoloniProduct[]>("products/getAll", { offset, qty });
+  return moloniRequest("products/getAll", { offset, qty }) as Promise<MoloniProduct[]>;
 }
 
 export async function getMoloniProduct(productId: number): Promise<MoloniProduct> {
-  return moloniRequest<MoloniProduct>("products/getOne", { product_id: productId });
+  return moloniRequest("products/getOne", { product_id: productId }) as Promise<MoloniProduct>;
 }
 
 export async function getMoloniProductCount(): Promise<number> {
-  const result = await moloniRequest<{ count: number }>("products/count");
+  const result = (await moloniRequest("products/count")) as { count: number };
   return result.count;
 }
 
 export async function getMoloniCategories(): Promise<MoloniCategory[]> {
-  return moloniRequest<MoloniCategory[]>("productCategories/getAll", { parent_id: 0 });
+  return moloniRequest("productCategories/getAll", { parent_id: 0 }) as Promise<MoloniCategory[]>;
 }
 
 export async function getMoloniCategoryProducts(categoryId: number, offset = 0, qty = 50): Promise<MoloniProduct[]> {
-  return moloniRequest<MoloniProduct[]>("products/getAll", {
+  return moloniRequest("products/getAll", {
     category_id: categoryId,
     offset,
     qty,
-  });
+  }) as Promise<MoloniProduct[]>;
 }
 
 // Check stock for a single product (real-time)

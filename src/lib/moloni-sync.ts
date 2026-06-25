@@ -5,6 +5,7 @@ import {
   getMoloniProductCount,
   isMoloniConfigured,
 } from "./moloni";
+import { getErrorMessage } from "./errors";
 import { slugify } from "./utils";
 
 export async function syncCategories(): Promise<{ synced: number; errors: string[] }> {
@@ -49,12 +50,12 @@ export async function syncCategories(): Promise<{ synced: number; errors: string
           },
         });
         synced++;
-      } catch (err: any) {
-        errors.push(`Category ${mc.category_id}: ${err.message}`);
+      } catch (err) {
+        errors.push(`Category ${mc.category_id}: ${getErrorMessage(err)}`);
       }
     }
-  } catch (err: any) {
-    errors.push(`Fetch categories: ${err.message}`);
+  } catch (err) {
+    errors.push(`Fetch categories: ${getErrorMessage(err)}`);
   }
 
   await prisma.moloniSyncLog.create({
@@ -179,15 +180,15 @@ export async function syncProducts(): Promise<{ synced: number; errors: string[]
           }
 
           synced++;
-        } catch (err: any) {
-          errors.push(`Product ${mp.product_id}: ${err.message}`);
+        } catch (err) {
+          errors.push(`Product ${mp.product_id}: ${getErrorMessage(err)}`);
         }
       }
 
       offset += batchSize;
     }
-  } catch (err: any) {
-    errors.push(`Fetch products: ${err.message}`);
+  } catch (err) {
+    errors.push(`Fetch products: ${getErrorMessage(err)}`);
   }
 
   await prisma.moloniSyncLog.create({

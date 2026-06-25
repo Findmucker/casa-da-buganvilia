@@ -26,7 +26,12 @@ const navItems = [
   { href: "/admin/settings", label: "Definições", icon: Settings },
 ];
 
-export default function AdminSidebar({ user }: { user: any }) {
+interface AdminSidebarUser {
+  name?: string | null;
+  email?: string | null;
+}
+
+export default function AdminSidebar({ user }: { user?: AdminSidebarUser }) {
   const pathname = usePathname();
 
   return (

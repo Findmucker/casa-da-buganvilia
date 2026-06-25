@@ -2,8 +2,21 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+
+type GalleryArtist = Prisma.ArtistGetPayload<{
+  include: {
+    translations: true;
+    artworks: {
+      include: {
+        translations: true;
+        images: true;
+      };
+    };
+  };
+}>;
 
 export default async function GalleryPage({
   params,
@@ -32,7 +45,15 @@ export default async function GalleryPage({
   return <GalleryContent artists={artists} locale={locale} prefix={prefix} />;
 }
 
-function GalleryContent({ artists, locale, prefix }: any) {
+function GalleryContent({
+  artists,
+  locale,
+  prefix,
+}: {
+  artists: GalleryArtist[];
+  locale: string;
+  prefix: string;
+}) {
   const t = useTranslations("gallery");
 
   return (
@@ -44,7 +65,7 @@ function GalleryContent({ artists, locale, prefix }: any) {
 
       {artists.length > 0 ? (
         <div className="space-y-20">
-          {artists.map((artist: any) => {
+          {artists.map((artist) => {
             const at = artist.translations[0];
             return (
               <section key={artist.id}>
@@ -62,7 +83,7 @@ function GalleryContent({ artists, locale, prefix }: any) {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {artist.artworks.map((artwork: any) => {
+                  {artist.artworks.map((artwork) => {
                     const aw = artwork.translations[0];
                     return (
                       <Link key={artwork.id} href={`${prefix}/gallery/${artwork.slug}`} className="group">
@@ -82,7 +103,7 @@ function GalleryContent({ artists, locale, prefix }: any) {
                           {aw?.title || artwork.slug}
                         </h3>
                         {artwork.price && (
-                          <p className="text-sm font-serif text-terracotta">{formatPrice(artwork.price, locale)}</p>
+                          <p className="text-sm font-serif text-terracotta">{formatPrice(Number(artwork.price), locale)}</p>
                         )}
                       </Link>
                     );

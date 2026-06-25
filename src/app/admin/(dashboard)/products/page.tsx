@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { Plus, Edit, Eye, EyeOff } from "lucide-react";
 
@@ -41,7 +42,13 @@ export default async function ProductsPage() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     {product.images[0] ? (
-                      <img src={product.images[0].url} alt="" className="w-10 h-10 rounded object-cover" />
+                      <Image
+                        src={product.images[0].url}
+                        alt=""
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded object-cover"
+                      />
                     ) : (
                       <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center text-lg">🌸</div>
                     )}

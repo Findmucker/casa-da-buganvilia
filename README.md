@@ -118,3 +118,21 @@ As alterações relevantes devem:
 2. Incluir testes para regras de negócio novas.
 3. Passar `npm run check`.
 4. Usar uma mensagem de commit que referencie a issue.
+
+## Production admin access
+
+For Vercel admin login, configure these project environment variables before deploying:
+
+```env
+AUTH_SECRET="use-a-long-random-production-secret"
+AUTH_URL="https://your-production-domain"
+```
+
+Leave `DATABASE_URL` unset to use the bundled SQLite database for read-only preview deployments, or replace it with a managed production database URL. Do not use `file:./prisma/dev.db` on Vercel.
+
+Preview admin account:
+
+```text
+Email: admin@casadabuganvilia.pt
+Password: admin123
+```

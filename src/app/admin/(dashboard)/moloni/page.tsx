@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RefreshCw, CheckCircle, XCircle, AlertTriangle, Cloud, CloudOff } from "lucide-react";
 
 interface SyncLog {
@@ -12,41 +12,110 @@ interface SyncLog {
   createdAt: string;
 }
 
+interface MoloniStatusResponse {
+  configured: boolean;
+  lastSync: SyncLog | null;
+  recentLogs?: SyncLog[];
+}
+
+interface SyncSectionResult {
+  synced?: number;
+  errors?: string[];
+}
+
+interface SyncResult {
+  error?: string;
+  categories?: SyncSectionResult;
+  products?: SyncSectionResult;
+}
+
+async function fetchMoloniStatus(): Promise<MoloniStatusResponse> {
+  const res = await fetch("/api/admin/moloni/status");
+  return (await res.json()) as MoloniStatusResponse;
+}
+
+function SyncResultPanel({ result }: { result: SyncResult }) {
+  const categoryErrors = result.categories?.errors ?? [];
+  const productErrors = result.products?.errors ?? [];
+
+  return (
+    <div className={`rounded-xl p-6 mb-6 ${result.error ? "bg-red-50" : "bg-green-50"}`}>
+      {result.error ? (
+        <div className="flex items-center gap-2 text-red-700">
+          <XCircle className="h-5 w-5" />
+          <span>{result.error}</span>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-green-700">
+            <CheckCircle className="h-5 w-5" />
+            <span className="font-medium">Sincronizacao concluida!</span>
+          </div>
+          <div className="text-sm text-green-600 space-y-1">
+            <p>Categorias: {result.categories?.synced || 0} sincronizadas</p>
+            <p>Produtos: {result.products?.synced || 0} sincronizados</p>
+            {(categoryErrors.length > 0 || productErrors.length > 0) && (
+              <div className="mt-2 text-amber-600">
+                <p className="flex items-center gap-1">
+                  <AlertTriangle className="h-4 w-4" />
+                  Alguns erros ocorreram:
+                </p>
+                {categoryErrors.map((error, index) => (
+                  <p key={`c-${index}`} className="text-xs ml-5">{error}</p>
+                ))}
+                {productErrors.map((error, index) => (
+                  <p key={`p-${index}`} className="text-xs ml-5">{error}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function MoloniPage() {
   const [configured, setConfigured] = useState(false);
   const [lastSync, setLastSync] = useState<SyncLog | null>(null);
   const [recentLogs, setRecentLogs] = useState<SyncLog[]>([]);
   const [syncing, setSyncing] = useState(false);
-  const [syncResult, setSyncResult] = useState<any>(null);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStatus();
+  const applyStatus = useCallback((data: MoloniStatusResponse) => {
+    setConfigured(data.configured);
+    setLastSync(data.lastSync);
+    setRecentLogs(data.recentLogs || []);
   }, []);
 
-  async function fetchStatus() {
+  const refreshStatus = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/moloni/status");
-      const data = await res.json();
-      setConfigured(data.configured);
-      setLastSync(data.lastSync);
-      setRecentLogs(data.recentLogs || []);
+      applyStatus(await fetchMoloniStatus());
     } catch (err) {
       console.error("Failed to fetch Moloni status", err);
     } finally {
       setLoading(false);
     }
-  }
+  }, [applyStatus]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void refreshStatus();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [refreshStatus]);
 
   async function handleSync() {
     setSyncing(true);
     setSyncResult(null);
     try {
       const res = await fetch("/api/admin/moloni/sync", { method: "POST" });
-      const data = await res.json();
+      const data = (await res.json()) as SyncResult;
       setSyncResult(data);
-      fetchStatus(); // Refresh logs
-    } catch (err) {
+      await refreshStatus();
+    } catch {
       setSyncResult({ error: "Sync request failed" });
     } finally {
       setSyncing(false);
@@ -95,41 +164,7 @@ export default function MoloniPage() {
       </div>
 
       {/* Sync Result */}
-      {syncResult && (
-        <div className={`rounded-xl p-6 mb-6 ${syncResult.error ? "bg-red-50" : "bg-green-50"}`}>
-          {syncResult.error ? (
-            <div className="flex items-center gap-2 text-red-700">
-              <XCircle className="h-5 w-5" />
-              <span>{syncResult.error}</span>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-green-700">
-                <CheckCircle className="h-5 w-5" />
-                <span className="font-medium">Sincronização concluída!</span>
-              </div>
-              <div className="text-sm text-green-600 space-y-1">
-                <p>Categorias: {syncResult.categories?.synced || 0} sincronizadas</p>
-                <p>Produtos: {syncResult.products?.synced || 0} sincronizados</p>
-                {(syncResult.categories?.errors?.length > 0 || syncResult.products?.errors?.length > 0) && (
-                  <div className="mt-2 text-amber-600">
-                    <p className="flex items-center gap-1">
-                      <AlertTriangle className="h-4 w-4" />
-                      Alguns erros ocorreram:
-                    </p>
-                    {syncResult.categories?.errors?.map((e: string, i: number) => (
-                      <p key={`c-${i}`} className="text-xs ml-5">{e}</p>
-                    ))}
-                    {syncResult.products?.errors?.map((e: string, i: number) => (
-                      <p key={`p-${i}`} className="text-xs ml-5">{e}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {syncResult && <SyncResultPanel result={syncResult} />}
 
       {/* Environment Variables Guide */}
       {!configured && (
