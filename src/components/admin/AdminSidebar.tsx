@@ -3,11 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, LogOut, Package, Settings } from "lucide-react";
+import {
+  Frame,
+  Image as ImageIcon,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Palette,
+  Settings,
+  Tag,
+} from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Produtos", icon: Package },
+  { href: "/admin/categories", label: "Categorias", icon: Tag },
+  { href: "/admin/artists", label: "Artistas", icon: Palette },
+  { href: "/admin/artworks", label: "Obras de Arte", icon: Frame },
+  { href: "/admin/gallery", label: "Espaco", icon: ImageIcon },
   { href: "/admin/settings", label: "Definicoes", icon: Settings },
 ];
 

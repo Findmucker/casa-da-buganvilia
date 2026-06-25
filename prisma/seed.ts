@@ -360,8 +360,23 @@ async function seedSettings() {
       key: "address",
       value: "Tv. de Baltazar Gomes Figueira S/N, 2510-001 Óbidos",
     },
-    { key: "opening_hours", value: "10:00 - 19:00, Todos os dias" },
+    { key: "opening_hours", value: "10:00 - 19:00" },
+    { key: "working_days", value: "Todos os dias" },
     { key: "email", value: "info@casadabuganvilia.pt" },
+    {
+      key: "home_visit_description",
+      value:
+        "Estamos no coração de Óbidos, numa casa antiga transformada num espaço único de compras e cultura.",
+    },
+    {
+      key: "about_story_text",
+      value:
+        "A Casa da Buganvília é uma casa antiga no coração de Óbidos, transformada num espaço único onde cada sala oferece uma experiência diferente. Com decoração vintage, os próprios produtos decoram o espaço, criando um ambiente acolhedor e autêntico.",
+    },
+    {
+      key: "about_music_note",
+      value: "Música sempre presente, criando uma atmosfera única.",
+    },
   ];
 
   for (const setting of settings) {
@@ -543,7 +558,7 @@ async function main() {
   console.log(`   - ${categoryData.length} catalog categories`);
   console.log(`   - ${catalogProducts.length} verified catalog offerings`);
   console.log("   - 2 demo artists with 5 artworks");
-  console.log("   - 6 site settings");
+  console.log("   - 10 site settings");
 }
 
 main()

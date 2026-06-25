@@ -3,12 +3,28 @@ import Link from "next/link";
 import { ArrowRight, MapPin, Clock, Music } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { CATEGORIES, STORE_ADDRESS, getLocalePrefix } from "@/lib/constants";
+import { settingValue } from "@/lib/site-settings";
 
-export default function DefaultHome({ locale }: { locale: string }) {
+export default function DefaultHome({
+  locale,
+  settings,
+}: {
+  locale: string;
+  settings: Record<string, string>;
+}) {
   const t = useTranslations("home");
   const tNav = useTranslations("nav");
   const prefix = getLocalePrefix(locale);
   const navLabel = (key: string) => tNav(key);
+  const address = settingValue(settings, "address", STORE_ADDRESS);
+  const openingHours = settingValue(settings, "opening_hours", "10:00 - 19:00");
+  const workingDays = settingValue(settings, "working_days", "");
+  const visitDescription = settingValue(
+    settings,
+    "home_visit_description",
+    t("visitUsDescription"),
+  );
+  const musicNote = settingValue(settings, "about_music_note", "Music always on");
 
   return (
     <div>
@@ -70,20 +86,23 @@ export default function DefaultHome({ locale }: { locale: string }) {
               {t("visitUs")}
             </h2>
             <p className="text-warm-brown/70 leading-relaxed mb-8">
-              {t("visitUsDescription")}
+              {visitDescription}
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-warm-brown">
                 <MapPin className="h-5 w-5 text-terracotta" />
-                <span>{STORE_ADDRESS}</span>
+                <span>{address}</span>
               </div>
               <div className="flex items-center gap-3 text-warm-brown">
                 <Clock className="h-5 w-5 text-terracotta" />
-                <span>10:00 - 19:00</span>
+                <span>
+                  {openingHours}
+                  {workingDays ? `, ${workingDays}` : ""}
+                </span>
               </div>
               <div className="flex items-center gap-3 text-warm-brown">
                 <Music className="h-5 w-5 text-terracotta" />
-                <span className="italic text-warm-brown/60">Music always on</span>
+                <span className="italic text-warm-brown/60">{musicNote}</span>
               </div>
             </div>
           </div>

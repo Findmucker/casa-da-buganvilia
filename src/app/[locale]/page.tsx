@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import DefaultHome from "./DefaultHome";
+import { getSiteSettingsMap } from "@/lib/site-settings";
 
 export default async function HomePage({
   params,
@@ -8,6 +9,7 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const settings = await getSiteSettingsMap();
 
-  return <DefaultHome locale={locale} />;
+  return <DefaultHome locale={locale} settings={settings} />;
 }

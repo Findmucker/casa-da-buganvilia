@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Music, Home, Paintbrush, Sun } from "lucide-react";
+import { getSiteSettingsMap, settingValue } from "@/lib/site-settings";
 
 export default async function AboutPage({
   params,
@@ -9,12 +10,15 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const settings = await getSiteSettingsMap();
 
-  return <AboutContent />;
+  return <AboutContent settings={settings} />;
 }
 
-function AboutContent() {
+function AboutContent({ settings }: { settings: Record<string, string> }) {
   const t = useTranslations("about");
+  const storyText = settingValue(settings, "about_story_text", t("storyText"));
+  const musicNote = settingValue(settings, "about_music_note", t("musicNote"));
 
   const spaces = [
     { icon: Home, title: t("groundFloor"), emoji: "🏠" },
@@ -35,7 +39,7 @@ function AboutContent() {
       {/* Story */}
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-serif font-bold text-burgundy mb-6">{t("storyTitle")}</h2>
-        <p className="text-warm-brown/70 leading-relaxed text-lg">{t("storyText")}</p>
+        <p className="text-warm-brown/70 leading-relaxed text-lg">{storyText}</p>
       </section>
 
       {/* Spaces */}
@@ -57,7 +61,7 @@ function AboutContent() {
       <section className="bg-burgundy/5 py-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Music className="h-8 w-8 text-bougainvillea mx-auto mb-4" />
-          <p className="text-lg italic text-warm-brown/60">{t("musicNote")}</p>
+          <p className="text-lg italic text-warm-brown/60">{musicNote}</p>
         </div>
       </section>
     </div>

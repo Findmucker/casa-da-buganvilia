@@ -20,9 +20,20 @@ Sem esta variável, ou com qualquer valor diferente de `true`, o modo de constru
 - Catálogo visual de produtos por categoria, sem preços públicos
 - Contacto direto por WhatsApp em cada artigo, com mensagem localizada e pré-preenchida
 - Galeria de arte e apresentação do espaço
-- Administração protegida com NextAuth
+- Administração protegida com NextAuth para produtos, categorias, artistas, obras, imagens do espaço e definições do site
 - Upload de imagens através do Cloudinary
 - Identidade visual única e consistente da Casa da Buganvília
+
+## Backoffice
+
+As rotas `/admin` permitem gerir o conteúdo público sem checkout:
+
+- Produtos, categorias, artistas, obras de arte e imagens do espaço
+- Estado ativo/inativo e ordenação quando aplicável
+- Eliminação protegida quando existem associações que tornam a remoção insegura
+- Definições de contacto, redes sociais, horário, dias de funcionamento e textos editáveis da homepage e da página sobre o espaço
+
+As páginas públicas continuam a usar as traduções existentes como fallback quando uma definição textual está vazia.
 
 ## Tecnologia
 
