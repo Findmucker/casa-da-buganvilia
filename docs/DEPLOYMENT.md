@@ -28,7 +28,10 @@ The proxy matcher excludes `/admin`, `/api`, Next.js internals, Vercel internals
 5. Keep `NEXT_PUBLIC_SITE_LIVE=false` until launch approval.
 6. Deploy and verify the production URL in desktop and mobile viewports.
 
-`postinstall` generates the Prisma client automatically.
+`postinstall` generates the Prisma client automatically. Prisma generation can
+run during install before Vercel exposes build-time database variables, but the
+Next.js build and runtime still require real `DATABASE_URL` and `DIRECT_URL`
+values.
 
 ## Pre-deployment verification
 
