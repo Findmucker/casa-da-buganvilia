@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canUsePreviewAdminFallback,
+  resolveAuthSecret,
   verifyPreviewAdminCredentials,
 } from "./admin-credentials";
 
@@ -53,5 +54,27 @@ describe("preview admin credentials", () => {
         isVercel: "1",
       }),
     ).resolves.toBeNull();
+  });
+
+  it("uses configured auth secrets first", () => {
+    expect(resolveAuthSecret({ authSecret: "auth-secret" })).toBe(
+      "auth-secret",
+    );
+    expect(resolveAuthSecret({ nextAuthSecret: "nextauth-secret" })).toBe(
+      "nextauth-secret",
+    );
+  });
+
+  it("uses a preview auth secret when Vercel preview mode has no configured secret", () => {
+    expect(resolveAuthSecret({ isVercel: "1" })).toBeTruthy();
+  });
+
+  it("does not use a preview auth secret with a managed database", () => {
+    expect(
+      resolveAuthSecret({
+        databaseUrl: "postgresql://user:pass@example.com:5432/app",
+        isVercel: "1",
+      }),
+    ).toBeUndefined();
   });
 });

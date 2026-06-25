@@ -1,10 +1,13 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { verifyPreviewAdminCredentials } from "./admin-credentials";
+import {
+  resolveAuthSecret,
+  verifyPreviewAdminCredentials,
+} from "./admin-credentials";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  secret: resolveAuthSecret(),
   trustHost: true,
   providers: [
     Credentials({

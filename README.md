@@ -140,4 +140,7 @@ Password: admin123
 When deployed on Vercel with no managed `DATABASE_URL`, or with a SQLite
 `file:` database URL, authentication falls back to this preview admin account if
 the bundled SQLite lookup fails. Set `AUTH_PREVIEW_ADMIN_FALLBACK=false` to
-disable that fallback after configuring a managed production database.
+disable that fallback after configuring a managed production database. In the
+same preview mode, Auth.js also uses a stable preview secret if `AUTH_SECRET` is
+missing so the login endpoint remains reachable. A real `AUTH_SECRET` should
+still be configured before relying on production admin access.

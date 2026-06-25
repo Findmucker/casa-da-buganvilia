@@ -97,7 +97,9 @@ On Vercel preview-style deployments without a managed database, the credentials
 callback can fall back to this account if the bundled SQLite lookup fails. The
 fallback is active when `DATABASE_URL` is unset or starts with `file:`. Set
 `AUTH_PREVIEW_ADMIN_FALLBACK=false` after configuring a managed production
-database if you want database-backed login only.
+database if you want database-backed login only. In the same fallback mode,
+Auth.js uses a stable preview secret when `AUTH_SECRET` is missing so the auth
+endpoints do not fail before credentials are checked.
 
 If `/admin/login` returns a server configuration error on Vercel, check the
 Vercel project environment variables:
