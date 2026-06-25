@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Edit, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import ProductForm, {
   type ProductCategoryOption,
@@ -76,14 +76,26 @@ export default function AdminProductManager({
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
                   Estado
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500">
-                  Acoes
-                </th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
+                <tr
+                  key={product.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => startEdit(product)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      startEdit(product);
+                    }
+                  }}
+                  className={`cursor-pointer hover:bg-gray-50 ${
+                    editingProduct?.id === product.id ? "bg-burgundy/5" : ""
+                  }`}
+                  aria-label={`Editar ${product.name}`}
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {product.imageUrl ? (
@@ -110,28 +122,21 @@ export default function AdminProductManager({
                   <td className="px-6 py-4 text-sm text-gray-900">
                     EUR {Number(product.price).toFixed(2)}
                   </td>
-                  <td className="px-6 py-4">
+                  <td
+                    className="px-6 py-4"
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <ProductStatusToggle
                       active={product.active}
                       productId={product.id}
                       productName={product.name}
                     />
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button
-                      type="button"
-                      onClick={() => startEdit(product)}
-                      className="inline-flex items-center gap-1 text-sm text-burgundy hover:underline"
-                    >
-                      <Edit className="h-4 w-4" />
-                      Editar
-                    </button>
-                  </td>
                 </tr>
               ))}
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400">
+                  <td colSpan={4} className="px-6 py-12 text-center text-gray-400">
                     Nenhum produto encontrado
                   </td>
                 </tr>

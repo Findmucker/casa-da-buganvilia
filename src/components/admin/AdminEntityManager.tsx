@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Edit, Plus, Save, Trash2, X } from "lucide-react";
+import { Plus, Save, Trash2, X } from "lucide-react";
 import { useState } from "react";
 
 type FieldType = "checkbox" | "number" | "select" | "text" | "textarea";
@@ -163,29 +163,39 @@ export default function AdminEntityManager({
                   Item
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500">
-                  Acoes
+                  Eliminar
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50">
+                <tr
+                  key={row.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => startEdit(row)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      startEdit(row);
+                    }
+                  }}
+                  className={`cursor-pointer hover:bg-gray-50 ${
+                    editingId === row.id ? "bg-burgundy/5" : ""
+                  }`}
+                  aria-label={`Editar ${row.title}`}
+                >
                   <td className="px-6 py-4">
                     <p className="font-medium text-gray-900">{row.title}</p>
                     {row.subtitle ? (
                       <p className="mt-1 text-sm text-gray-500">{row.subtitle}</p>
                     ) : null}
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td
+                    className="px-6 py-4 text-right"
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <div className="inline-flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => startEdit(row)}
-                        className="inline-flex items-center gap-1 text-sm text-burgundy hover:underline"
-                      >
-                        <Edit className="h-4 w-4" />
-                        Editar
-                      </button>
                       <button
                         type="button"
                         onClick={() => remove(row)}
