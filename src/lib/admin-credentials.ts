@@ -8,8 +8,6 @@ const PREVIEW_AUTH_SECRET =
 
 interface AdminCredentialOptions {
   authSecret?: string;
-  databaseUrl?: string;
-  isVercel?: string;
   nextAuthSecret?: string;
   previewAdminFallback?: string;
 }
@@ -21,20 +19,14 @@ export interface AdminUserSession {
 }
 
 export function canUsePreviewAdminFallback({
-  databaseUrl = process.env.DATABASE_URL,
-  isVercel = process.env.VERCEL,
   previewAdminFallback = process.env.AUTH_PREVIEW_ADMIN_FALLBACK,
 }: AdminCredentialOptions = {}) {
   if (previewAdminFallback === "true") return true;
-  if (previewAdminFallback === "false") return false;
-
-  return Boolean(isVercel) && (!databaseUrl || databaseUrl.startsWith("file:"));
+  return false;
 }
 
 export function resolveAuthSecret({
   authSecret = process.env.AUTH_SECRET,
-  databaseUrl = process.env.DATABASE_URL,
-  isVercel = process.env.VERCEL,
   nextAuthSecret = process.env.NEXTAUTH_SECRET,
   previewAdminFallback = process.env.AUTH_PREVIEW_ADMIN_FALLBACK,
 }: AdminCredentialOptions = {}) {
@@ -42,8 +34,6 @@ export function resolveAuthSecret({
   if (nextAuthSecret) return nextAuthSecret;
   if (
     canUsePreviewAdminFallback({
-      databaseUrl,
-      isVercel,
       previewAdminFallback,
     })
   ) {

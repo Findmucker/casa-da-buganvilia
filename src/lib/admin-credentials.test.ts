@@ -6,24 +6,22 @@ import {
 } from "./admin-credentials";
 
 describe("preview admin credentials", () => {
-  it("is enabled on Vercel when DATABASE_URL is unset", () => {
-    expect(canUsePreviewAdminFallback({ isVercel: "1" })).toBe(true);
+  it("is disabled by default on Vercel when DATABASE_URL is unset", () => {
+    expect(canUsePreviewAdminFallback()).toBe(false);
   });
 
   it("is disabled when a production database is configured", () => {
-    expect(
-      canUsePreviewAdminFallback({
-        databaseUrl: "postgresql://user:pass@example.com:5432/app",
-        isVercel: "1",
-      }),
-    ).toBe(false);
+    expect(canUsePreviewAdminFallback()).toBe(false);
   });
 
-  it("is enabled on Vercel when DATABASE_URL points at SQLite", () => {
+  it("is not enabled by a local file database URL", () => {
+    expect(canUsePreviewAdminFallback()).toBe(false);
+  });
+
+  it("can be enabled explicitly", () => {
     expect(
       canUsePreviewAdminFallback({
-        databaseUrl: "file:./prisma/dev.db",
-        isVercel: "1",
+        previewAdminFallback: "true",
       }),
     ).toBe(true);
   });
@@ -31,7 +29,6 @@ describe("preview admin credentials", () => {
   it("can be disabled explicitly", () => {
     expect(
       canUsePreviewAdminFallback({
-        isVercel: "1",
         previewAdminFallback: "false",
       }),
     ).toBe(false);
@@ -40,7 +37,7 @@ describe("preview admin credentials", () => {
   it("accepts the documented preview admin credentials when enabled", async () => {
     await expect(
       verifyPreviewAdminCredentials("admin@casadabuganvilia.pt", "admin123", {
-        isVercel: "1",
+        previewAdminFallback: "true",
       }),
     ).resolves.toMatchObject({
       id: "preview-admin",
@@ -51,7 +48,7 @@ describe("preview admin credentials", () => {
   it("rejects invalid preview admin credentials", async () => {
     await expect(
       verifyPreviewAdminCredentials("admin@casadabuganvilia.pt", "wrong", {
-        isVercel: "1",
+        previewAdminFallback: "true",
       }),
     ).resolves.toBeNull();
   });
@@ -65,16 +62,13 @@ describe("preview admin credentials", () => {
     );
   });
 
-  it("uses a preview auth secret when Vercel preview mode has no configured secret", () => {
-    expect(resolveAuthSecret({ isVercel: "1" })).toBeTruthy();
+  it("uses a preview auth secret when fallback is explicitly enabled", () => {
+    expect(
+      resolveAuthSecret({ previewAdminFallback: "true" }),
+    ).toBeTruthy();
   });
 
   it("does not use a preview auth secret with a managed database", () => {
-    expect(
-      resolveAuthSecret({
-        databaseUrl: "postgresql://user:pass@example.com:5432/app",
-        isVercel: "1",
-      }),
-    ).toBeUndefined();
+    expect(resolveAuthSecret()).toBeUndefined();
   });
 });

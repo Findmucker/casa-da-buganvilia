@@ -22,9 +22,8 @@ The proxy matcher excludes `/admin`, `/api`, Next.js internals, Vercel internals
 3. Use `npm run build` as the build command.
 4. Configure the variables documented in `.env.example`.
    Set `NEXT_PUBLIC_WHATSAPP_NUMBER=+351910341182`.
-   Do not set `DATABASE_URL` to `file:./prisma/dev.db` on Vercel. Leave it
-   unset for the bundled preview database, or set it to a managed production
-   database URL.
+   Set `DATABASE_URL` to the Supabase Supavisor transaction pooler URL.
+   Set `DIRECT_URL` to a Supabase direct/session connection for Prisma migrations.
    Set `AUTH_SECRET` to a long random value for production admin sessions.
 5. Keep `NEXT_PUBLIC_SITE_LIVE=false` until launch approval.
 6. Deploy and verify the production URL in desktop and mobile viewports.
@@ -80,11 +79,22 @@ General contact messages use the same policy and include the customer language i
 3. Trigger a new deployment. `NEXT_PUBLIC_*` values are embedded at build time.
 4. Verify the home page, shop, gallery, contact page, locale routing, and admin login.
 
-The repository's SQLite database is bundled for read-only storefront previews on
-Vercel. It is not a persistent production database: admin mutations and data
-written by a serverless invocation will not survive deployments or invocation
-recycling. Configure a managed production database before relying on admin
-catalog writes.
+The site requires a persistent Supabase Postgres database for admin catalog writes.
+Do not deploy production admin editing with a local `file:` database URL.
+
+## Supabase database setup
+
+1. Create or choose a Supabase project.
+2. In the Supabase SQL editor, create a dedicated Prisma role following Supabase's Prisma guide.
+3. Copy the Supavisor transaction pooler URL for `DATABASE_URL`.
+4. Copy the direct or session pooler URL for `DIRECT_URL`.
+5. Add both values to local `.env`, Vercel preview, and Vercel production environments.
+6. Run migrations and seed the first admin/catalog data:
+
+```bash
+npm run db:deploy
+npm run db:seed
+```
 
 ## Admin login
 
@@ -93,21 +103,17 @@ The seeded preview admin account is:
 - Email: `admin@casadabuganvilia.pt`
 - Password: `admin123`
 
-On Vercel preview-style deployments without a managed database, the credentials
-callback can fall back to this account if the bundled SQLite lookup fails. The
-fallback is active when `DATABASE_URL` is unset or starts with `file:`. Set
-`AUTH_PREVIEW_ADMIN_FALLBACK=false` after configuring a managed production
-database if you want database-backed login only. In the same fallback mode,
-Auth.js uses a stable preview secret when `AUTH_SECRET` is missing so the auth
-endpoints do not fail before credentials are checked.
+The credentials callback reads this account from Supabase after `npm run db:seed`.
+`AUTH_PREVIEW_ADMIN_FALLBACK=true` can enable the hardcoded preview account for
+emergency testing, but production should leave that fallback disabled.
 
 If `/admin/login` returns a server configuration error on Vercel, check the
 Vercel project environment variables:
 
 - `AUTH_SECRET` should be set for production admin sessions.
 - `AUTH_URL` should match the production URL.
-- `DATABASE_URL` should be unset for the bundled SQLite preview database, or
-  point to a managed production database. Do not use `file:./prisma/dev.db`.
+- `DATABASE_URL` should point to Supabase Postgres.
+- `DIRECT_URL` should be configured for Prisma migrations.
 
 ## Rollback
 

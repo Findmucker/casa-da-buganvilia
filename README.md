@@ -44,7 +44,7 @@ As páginas públicas continuam a usar as traduções existentes como fallback q
 - TypeScript em modo estrito
 - Tailwind CSS 4
 - next-intl
-- Prisma ORM e SQLite no desenvolvimento
+- Prisma ORM e Supabase Postgres
 - Vitest
 - ESLint
 
@@ -60,7 +60,7 @@ git clone https://github.com/Findmucker/casa-da-buganvilia.git
 cd casa-da-buganvilia
 npm ci
 Copy-Item .env.example .env.local
-npm run db:push
+npm run db:migrate
 npm run dev
 ```
 
@@ -98,13 +98,16 @@ Comandos individuais:
 
 ## Base de dados
 
+O projeto usa PostgreSQL através do Supabase. Configure `DATABASE_URL` e `DIRECT_URL` antes de executar comandos Prisma.
+
 ```bash
-npm run db:push
+npm run db:migrate
 npm run db:seed
 npm run db:studio
 ```
 
-SQLite serve apenas para desenvolvimento. Antes do lançamento comercial, deve ser adotada uma base de dados persistente adequada ao ambiente de produção.
+Use `DATABASE_URL` com o Supavisor transaction pooler para runtime/serverless e `DIRECT_URL` com uma ligação direta ou session pooler para migrações Prisma.
+Em ambientes já provisionados, use `npm run db:deploy` para aplicar migrações sem criar novas.
 
 O catálogo inicial é baseado em publicações da conta oficial da loja. As fontes, limitações e processo de atualização estão documentados em [docs/CATALOG_SOURCES.md](docs/CATALOG_SOURCES.md).
 
@@ -139,9 +142,11 @@ For Vercel admin login, configure these project environment variables before dep
 ```env
 AUTH_SECRET="use-a-long-random-production-secret"
 AUTH_URL="https://your-production-domain"
+DATABASE_URL="postgresql://..."
+DIRECT_URL="postgresql://..."
 ```
 
-Leave `DATABASE_URL` unset to use the bundled SQLite database for read-only preview deployments, or replace it with a managed production database URL. Do not use `file:./prisma/dev.db` on Vercel.
+`DATABASE_URL` and `DIRECT_URL` should point to Supabase Postgres. Do not use a local `file:` database URL on Vercel.
 
 Preview admin account:
 
@@ -150,10 +155,4 @@ Email: admin@casadabuganvilia.pt
 Password: admin123
 ```
 
-When deployed on Vercel with no managed `DATABASE_URL`, or with a SQLite
-`file:` database URL, authentication falls back to this preview admin account if
-the bundled SQLite lookup fails. Set `AUTH_PREVIEW_ADMIN_FALLBACK=false` to
-disable that fallback after configuring a managed production database. In the
-same preview mode, Auth.js also uses a stable preview secret if `AUTH_SECRET` is
-missing so the login endpoint remains reachable. A real `AUTH_SECRET` should
-still be configured before relying on production admin access.
+Authentication reads the admin account from the configured Supabase database. `AUTH_PREVIEW_ADMIN_FALLBACK=true` can still enable the preview account for emergency testing, but production should leave that fallback disabled.
