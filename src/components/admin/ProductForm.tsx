@@ -17,32 +17,36 @@ const LOCALE_NAMES: Record<(typeof LOCALES)[number], string> = {
   ja: "Japanese",
 };
 
-interface CategoryOption {
+export interface ProductCategoryOption {
   id: string;
   slug: string;
   translations: { name: string }[];
 }
 
-interface TranslationFormValue {
+export interface ProductTranslationFormValue {
   name: string;
   description: string;
   shortDescription: string;
 }
 
-type TranslationMap = Record<string, TranslationFormValue>;
+export type ProductTranslationMap = Record<string, ProductTranslationFormValue>;
 
-interface ProductFormValue {
+export interface ProductFormValue {
   slug: string;
   price: string;
   categoryId: string;
   featured: boolean;
   active: boolean;
-  translations: TranslationMap;
+  translations: ProductTranslationMap;
 }
 
 interface ProductFormProps {
-  categories: CategoryOption[];
+  categories: ProductCategoryOption[];
+  embedded?: boolean;
   initialProduct?: ProductFormValue & { id: string };
+  onCancel?: () => void;
+  onDeleted?: () => void;
+  onSaved?: () => void;
 }
 
 function emptyTranslations() {
@@ -51,12 +55,27 @@ function emptyTranslations() {
       locale,
       { name: "", description: "", shortDescription: "" },
     ]),
-  ) as TranslationMap;
+  ) as ProductTranslationMap;
+}
+
+function emptyProduct(): ProductFormValue {
+  return {
+    slug: "",
+    price: "",
+    categoryId: "",
+    featured: false,
+    active: true,
+    translations: emptyTranslations(),
+  };
 }
 
 export default function ProductForm({
   categories,
+  embedded = false,
   initialProduct,
+  onCancel,
+  onDeleted,
+  onSaved,
 }: ProductFormProps) {
   const router = useRouter();
   const [activeLocale, setActiveLocale] =
@@ -65,21 +84,14 @@ export default function ProductForm({
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState<ProductFormValue>(
-    initialProduct ?? {
-      slug: "",
-      price: "",
-      categoryId: "",
-      featured: false,
-      active: true,
-      translations: emptyTranslations(),
-    },
+    initialProduct ?? emptyProduct(),
   );
 
   const isEditing = Boolean(initialProduct);
 
   function updateTranslation(
     locale: string,
-    field: keyof TranslationFormValue,
+    field: keyof ProductTranslationFormValue,
     value: string,
   ) {
     setForm((previous) => ({
@@ -118,7 +130,8 @@ export default function ProductForm({
         throw new Error(body?.error ?? "Nao foi possivel guardar o produto.");
       }
 
-      router.push("/admin/products");
+      if (!embedded) router.push("/admin/products");
+      onSaved?.();
       router.refresh();
     } catch (saveError) {
       setError(
@@ -151,7 +164,8 @@ export default function ProductForm({
         throw new Error(body?.error ?? "Nao foi possivel eliminar o produto.");
       }
 
-      router.push("/admin/products");
+      if (!embedded) router.push("/admin/products");
+      onDeleted?.();
       router.refresh();
     } catch (deleteError) {
       setError(
@@ -166,23 +180,35 @@ export default function ProductForm({
 
   return (
     <div>
-      <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin/products" className="text-gray-400 hover:text-gray-600">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="text-2xl font-bold text-gray-900">
-          {isEditing ? "Editar Produto" : "Novo Produto"}
-        </h1>
-      </div>
+      {!embedded ? (
+        <div className="mb-8 flex items-center gap-4">
+          <Link
+            href="/admin/products"
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {isEditing ? "Editar Produto" : "Novo Produto"}
+          </h1>
+        </div>
+      ) : null}
 
-      <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className={embedded ? "space-y-4" : "max-w-3xl space-y-6"}
+      >
         {error ? (
           <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
             {error}
           </div>
         ) : null}
 
-        <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
+        <div
+          className={
+            embedded ? "space-y-4" : "space-y-4 rounded-xl bg-white p-6 shadow-sm"
+          }
+        >
           <h2 className="font-medium text-gray-900">Informacao basica</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div>
@@ -259,7 +285,11 @@ export default function ProductForm({
           </div>
         </div>
 
-        <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
+        <div
+          className={
+            embedded ? "space-y-4" : "space-y-4 rounded-xl bg-white p-6 shadow-sm"
+          }
+        >
           <h2 className="font-medium text-gray-900">Traducoes</h2>
           <div className="flex flex-wrap gap-2 border-b pb-3">
             {LOCALES.map((locale) => (
@@ -346,6 +376,16 @@ export default function ProductForm({
             >
               <Trash2 className="h-4 w-4" />
               {deleting ? "A eliminar..." : "Eliminar"}
+            </button>
+          ) : null}
+          {embedded && onCancel ? (
+            <button
+              type="button"
+              disabled={saving || deleting}
+              onClick={onCancel}
+              className="rounded-lg border border-gray-200 px-5 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50"
+            >
+              Cancelar
             </button>
           ) : null}
         </div>

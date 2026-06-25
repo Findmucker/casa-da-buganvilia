@@ -146,20 +146,12 @@ model ArtworkImage {
 
 // ─── Gallery (physical space photos) ─────────────────────────────────
 
-enum GallerySection {
-  EXTERIOR
-  GROUND_FLOOR
-  SECOND_FLOOR
-  COURTYARD
-  DETAIL
-}
-
 model GalleryImage {
   id                String         @id @default(cuid())
   cloudinaryPublicId String
   url               String
   alt               String?
-  section           GallerySection
+  section           String
   sortOrder         Int            @default(0)
   createdAt         DateTime       @default(now())
 }

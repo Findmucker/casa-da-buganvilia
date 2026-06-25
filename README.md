@@ -29,7 +29,10 @@ Sem esta variável, ou com qualquer valor diferente de `true`, o modo de constru
 As rotas `/admin` permitem gerir o conteúdo público sem checkout:
 
 - Produtos, categorias, artistas, obras de arte e imagens do espaço
+- Painel inicial com totais, itens que precisam de atenção, conteúdo recente e atalhos operacionais
+- Edição de produtos, categorias, artistas, obras e imagens em painel lateral na própria lista
 - Estado ativo/inativo e ordenação quando aplicável
+- Nomes livres para salas/secções das imagens do espaço
 - Eliminação protegida quando existem associações que tornam a remoção insegura
 - Definições de contacto, redes sociais, horário, dias de funcionamento e textos editáveis da homepage e da página sobre o espaço
 

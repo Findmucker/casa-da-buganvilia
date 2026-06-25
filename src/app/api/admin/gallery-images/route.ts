@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import type { GallerySection } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
@@ -10,7 +9,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     alt?: string;
     cloudinaryPublicId?: string;
-    section: GallerySection;
+    section: string;
     sortOrder?: number;
     url: string;
   };
