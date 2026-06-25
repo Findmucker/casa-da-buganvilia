@@ -1,22 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
+import { normalizeProductSaveInput } from "@/lib/admin-products";
 import prisma from "@/lib/prisma";
-
-interface ProductTranslationInput {
-  name?: string;
-  description?: string;
-  shortDescription?: string;
-}
-
-interface ProductCreateInput {
-  slug: string;
-  price: string | number;
-  categoryId: string;
-  featured?: boolean;
-  active?: boolean;
-  translations: Record<string, ProductTranslationInput>;
-}
 
 export async function GET() {
   const session = await auth();
@@ -38,26 +24,21 @@ export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const body = (await request.json()) as ProductCreateInput;
-  const { slug, price, categoryId, featured, active, translations } = body;
+  const input = normalizeProductSaveInput(await request.json());
+  if ("error" in input) {
+    return NextResponse.json({ error: input.error }, { status: 400 });
+  }
 
   try {
     const product = await prisma.product.create({
       data: {
-        slug,
-        price: Number(price),
-        categoryId,
-        featured: featured || false,
-        active: active !== false,
+        slug: input.slug,
+        price: input.price,
+        categoryId: input.categoryId,
+        featured: input.featured,
+        active: input.active,
         translations: {
-          create: Object.entries(translations)
-            .filter(([, value]) => value.name)
-            .map(([locale, value]) => ({
-              locale,
-              name: value.name!,
-              description: value.description || null,
-              shortDescription: value.shortDescription || null,
-            })),
+          create: input.translations,
         },
       },
       include: { translations: true },
@@ -72,6 +53,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Ja existe um produto com esse slug." },
         { status: 409 },
+      );
+    }
+
+    if (error instanceof Error && error.message.includes("readonly")) {
+      return NextResponse.json(
+        {
+          error:
+            "A base de dados esta em modo de leitura. Configure uma base de dados persistente para editar produtos.",
+        },
+        { status: 503 },
       );
     }
 

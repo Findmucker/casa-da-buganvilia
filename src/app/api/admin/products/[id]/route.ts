@@ -1,36 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
+import { normalizeProductSaveInput } from "@/lib/admin-products";
 import prisma from "@/lib/prisma";
-
-interface ProductTranslationInput {
-  name?: string;
-  description?: string;
-  shortDescription?: string;
-}
-
-interface ProductUpdateInput {
-  slug: string;
-  price: string | number;
-  categoryId: string;
-  featured?: boolean;
-  active?: boolean;
-  translations: Record<string, ProductTranslationInput>;
-}
 
 interface ProductStatusInput {
   active: boolean;
-}
-
-function translationCreates(translations: Record<string, ProductTranslationInput>) {
-  return Object.entries(translations)
-    .filter(([, value]) => value.name)
-    .map(([locale, value]) => ({
-      locale,
-      name: value.name!,
-      description: value.description || null,
-      shortDescription: value.shortDescription || null,
-    }));
 }
 
 function productErrorResponse(error: unknown) {
@@ -44,9 +19,31 @@ function productErrorResponse(error: unknown) {
     );
   }
 
+  if (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2025"
+  ) {
+    return NextResponse.json({ error: "Produto nao encontrado." }, { status: 404 });
+  }
+
+  if (error instanceof Error && error.message.includes("readonly")) {
+    return NextResponse.json(
+      {
+        error:
+          "A base de dados esta em modo de leitura. Configure uma base de dados persistente para editar produtos.",
+      },
+      { status: 503 },
+    );
+  }
+
   console.error("Admin product route failed", error);
   return NextResponse.json(
-    { error: "Nao foi possivel guardar o produto." },
+    {
+      error:
+        error instanceof Error
+          ? `Nao foi possivel guardar o produto: ${error.message}`
+          : "Nao foi possivel guardar o produto.",
+    },
     { status: 500 },
   );
 }
@@ -87,21 +84,23 @@ export async function PUT(
   }
 
   const { id } = await params;
-  const body = (await request.json()) as ProductUpdateInput;
-  const { slug, price, categoryId, featured, active, translations } = body;
+  const input = normalizeProductSaveInput(await request.json());
+  if ("error" in input) {
+    return NextResponse.json({ error: input.error }, { status: 400 });
+  }
 
   try {
     const product = await prisma.product.update({
       where: { id },
       data: {
-        slug,
-        price: Number(price),
-        categoryId,
-        featured: featured || false,
-        active: active !== false,
+        slug: input.slug,
+        price: input.price,
+        categoryId: input.categoryId,
+        featured: input.featured,
+        active: input.active,
         translations: {
           deleteMany: {},
-          create: translationCreates(translations),
+          create: input.translations,
         },
       },
       include: { translations: true },
