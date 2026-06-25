@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
+import { verifyPreviewAdminCredentials } from "./admin-credentials";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
@@ -15,21 +16,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const { default: prisma } = await import("./prisma");
-        const user = await prisma.adminUser.findUnique({
-          where: { email: credentials.email as string },
-        });
+        const email = String(credentials.email);
+        const password = String(credentials.password);
 
-        if (!user) return null;
+        try {
+          const { default: prisma } = await import("./prisma");
+          const user = await prisma.adminUser.findUnique({
+            where: { email },
+          });
 
-        const isValid = await compare(
-          credentials.password as string,
-          user.passwordHash
-        );
+          if (!user) return null;
 
-        if (!isValid) return null;
+          const isValid = await compare(password, user.passwordHash);
 
-        return { id: user.id, email: user.email, name: user.name };
+          if (!isValid) return null;
+
+          return { id: user.id, email: user.email, name: user.name };
+        } catch (error) {
+          console.error("Admin credential database lookup failed", error);
+          return verifyPreviewAdminCredentials(email, password);
+        }
       },
     }),
   ],

@@ -136,3 +136,8 @@ Preview admin account:
 Email: admin@casadabuganvilia.pt
 Password: admin123
 ```
+
+When deployed on Vercel with no managed `DATABASE_URL`, or with a SQLite
+`file:` database URL, authentication falls back to this preview admin account if
+the bundled SQLite lookup fails. Set `AUTH_PREVIEW_ADMIN_FALLBACK=false` to
+disable that fallback after configuring a managed production database.

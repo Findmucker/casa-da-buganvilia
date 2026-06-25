@@ -93,6 +93,12 @@ The seeded preview admin account is:
 - Email: `admin@casadabuganvilia.pt`
 - Password: `admin123`
 
+On Vercel preview-style deployments without a managed database, the credentials
+callback can fall back to this account if the bundled SQLite lookup fails. The
+fallback is active when `DATABASE_URL` is unset or starts with `file:`. Set
+`AUTH_PREVIEW_ADMIN_FALLBACK=false` after configuring a managed production
+database if you want database-backed login only.
+
 If `/admin/login` returns a server configuration error on Vercel, check the
 Vercel project environment variables:
 
