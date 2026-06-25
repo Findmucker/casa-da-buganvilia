@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
@@ -40,26 +41,44 @@ export async function POST(request: NextRequest) {
   const body = (await request.json()) as ProductCreateInput;
   const { slug, price, categoryId, featured, active, translations } = body;
 
-  const product = await prisma.product.create({
-    data: {
-      slug,
-      price: Number(price),
-      categoryId,
-      featured: featured || false,
-      active: active !== false,
-      translations: {
-        create: Object.entries(translations)
-          .filter(([, value]) => value.name)
-          .map(([locale, value]) => ({
-            locale,
-            name: value.name!,
-            description: value.description || null,
-            shortDescription: value.shortDescription || null,
-          })),
+  try {
+    const product = await prisma.product.create({
+      data: {
+        slug,
+        price: Number(price),
+        categoryId,
+        featured: featured || false,
+        active: active !== false,
+        translations: {
+          create: Object.entries(translations)
+            .filter(([, value]) => value.name)
+            .map(([locale, value]) => ({
+              locale,
+              name: value.name!,
+              description: value.description || null,
+              shortDescription: value.shortDescription || null,
+            })),
+        },
       },
-    },
-    include: { translations: true },
-  });
+      include: { translations: true },
+    });
 
-  return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(product, { status: 201 });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: "Ja existe um produto com esse slug." },
+        { status: 409 },
+      );
+    }
+
+    console.error("Admin product create failed", error);
+    return NextResponse.json(
+      { error: "Nao foi possivel criar o produto." },
+      { status: 500 },
+    );
+  }
 }

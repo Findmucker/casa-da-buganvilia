@@ -16,12 +16,14 @@ describe("resolveDatasourceUrl", () => {
   it("uses the bundled SQLite database on Vercel when no database URL is set", () => {
     const cwd = path.join("C:", "project", "site");
 
-    expect(resolveDatasourceUrl({ isVercel: "1", cwd })).toBe(
+    expect(resolveDatasourceUrl({ databaseUrl: "", isVercel: "1", cwd })).toBe(
       `file:${path.join(cwd, "prisma", "dev.db")}`,
     );
   });
 
   it("lets Prisma use the schema datasource outside Vercel", () => {
-    expect(resolveDatasourceUrl({ cwd: "C:\\project" })).toBeUndefined();
+    expect(
+      resolveDatasourceUrl({ databaseUrl: "", cwd: "C:\\project" }),
+    ).toBeUndefined();
   });
 });

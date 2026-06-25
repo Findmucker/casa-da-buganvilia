@@ -25,7 +25,7 @@ The proxy matcher excludes `/admin`, `/api`, Next.js internals, Vercel internals
    Do not set `DATABASE_URL` to `file:./prisma/dev.db` on Vercel. Leave it
    unset for the bundled preview database, or set it to a managed production
    database URL.
-   Set `AUTH_SECRET` to a long random value; admin login fails without it.
+   Set `AUTH_SECRET` to a long random value for production admin sessions.
 5. Keep `NEXT_PUBLIC_SITE_LIVE=false` until launch approval.
 6. Deploy and verify the production URL in desktop and mobile viewports.
 
@@ -104,7 +104,7 @@ endpoints do not fail before credentials are checked.
 If `/admin/login` returns a server configuration error on Vercel, check the
 Vercel project environment variables:
 
-- `AUTH_SECRET` must be set.
+- `AUTH_SECRET` should be set for production admin sessions.
 - `AUTH_URL` should match the production URL.
 - `DATABASE_URL` should be unset for the bundled SQLite preview database, or
   point to a managed production database. Do not use `file:./prisma/dev.db`.

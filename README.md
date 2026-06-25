@@ -22,7 +22,6 @@ Sem esta variável, ou com qualquer valor diferente de `true`, o modo de constru
 - Galeria de arte e apresentação do espaço
 - Administração protegida com NextAuth
 - Upload de imagens através do Cloudinary
-- Sincronização de produtos e stock com Moloni
 - Identidade visual única e consistente da Casa da Buganvília
 
 ## Tecnologia
@@ -61,7 +60,7 @@ O site fica disponível em [http://localhost:3000](http://localhost:3000).
 
 ## Variáveis de ambiente
 
-Consulte [.env.example](.env.example). As integrações Cloudinary e Moloni são opcionais para trabalhar exclusivamente na página pública de construção.
+Consulte [.env.example](.env.example). A integração Cloudinary é opcional para trabalhar exclusivamente na página pública de construção.
 
 Nunca coloque credenciais reais no repositório.
 

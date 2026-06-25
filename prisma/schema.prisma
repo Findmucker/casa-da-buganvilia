@@ -28,7 +28,6 @@ model Category {
   children     Category[]            @relation("CategoryTree")
   sortOrder    Int                   @default(0)
   active       Boolean               @default(true)
-  moloniId     Int?                  @unique
   translations CategoryTranslation[]
   products     Product[]
   createdAt    DateTime              @default(now())
@@ -54,10 +53,8 @@ model Product {
   price        Decimal
   categoryId   String
   category     Category             @relation(fields: [categoryId], references: [id])
-  moloniId     Int?                 @unique
   stock        Int                  @default(0)
   hasStock     Boolean              @default(true)
-  moloniSyncedAt DateTime?
   featured     Boolean              @default(false)
   active       Boolean              @default(true)
   sortOrder    Int                  @default(0)
@@ -173,15 +170,4 @@ model SiteSettings {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
-}
-
-// ─── Moloni Sync ─────────────────────────────────────────────────────
-
-model MoloniSyncLog {
-  id        String   @id @default(cuid())
-  type      String   // "products", "categories", "stock"
-  status    String   // "success", "error"
-  message   String?
-  itemCount Int      @default(0)
-  createdAt DateTime @default(now())
 }
